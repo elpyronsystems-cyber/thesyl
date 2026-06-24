@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrons' Lounge | Thesyl Hotel Ltd.</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        thesyl: {
+                            maroon: '#801818',
+                            maroonHover: '#601010',
+                            gold: '#C5A880',
+                            goldDark: '#A3845A',
+                            cream: '#FAF8F5',
+                            sand: '#F3EFE9',
+                            dark: '#1C1917'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF8F5;
+            color: #1C1917;
+        }
+
+        /* Gold metallic glow effect for VIP status card */
+        .gold-vip-card {
+            background: linear-gradient(135deg, #1C1917 0%, #3a322d 45%, #801818 100%);
+            box-shadow: 0 15px 35px rgba(128, 24, 24, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .gold-foil-border {
+            border: 1px solid rgba(197, 168, 128, 0.3);
+        }
+
+        /* Tabs styling */
+        .tab-btn.active {
+            color: #801818;
+            border-bottom-color: #801818;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body
+    class="antialiased min-h-screen flex flex-col justify-between bg-thesyl-cream selection:bg-thesyl-gold selection:text-white pb-28 lg:pb-0">
+
+    <!-- PATRON HEADER BRANDING -->
+    <header
+        class="w-full bg-white border-b border-thesyl-gold/10 px-4 sm:px-6 lg:px-16 py-4 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+            <!-- Brand Mark -->
+            <a href="index.html" class="flex items-center gap-2 sm:gap-3">
+                <div class="flex items-center gap-2">
+                    <img src="thesyl_logo.png" alt="Thesyl Logo" style="height: 30px;">
+                    <span class="text-[8px] tracking-[0.2em] text-thesyl-dark/70 font-bold hidden md:inline">— PATRONS'
+                        CIRCLE —</span>
+                </div>
+            </a>
+
+            <!-- Desk Nav & Action -->
+            <div class="flex items-center gap-3 sm:gap-6">
+                <!-- Session User Mini -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <span class="hidden sm:inline text-xs font-semibold text-thesyl-dark/70">Welcome, Eliakim</span>
+                    <div
+                        class="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-thesyl-gold/40 shrink-0">
+                        <img src="assets/eliakim.png"
+                            alt="Eliakim W. K." class="w-full h-full object-cover">
+                    </div>
+                </div>
+
+                <!-- Logout Button -->
+                <button onclick="handleLogout()"
+                    class="px-3 sm:px-4 py-2 bg-thesyl-cream hover:bg-thesyl-maroon hover:text-white text-thesyl-maroon text-xs font-bold uppercase rounded-lg border border-thesyl-maroon/20 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="hidden sm:inline">Sign Out</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- PORTAL GRID -->
+    <main
+        class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-16 py-10 flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 items-start overflow-hidden lg:overflow-visible">
+
+        <!-- LEFT PANEL: Elite Patron Digital Badge & Summary Card -->
+        <div class="col-span-12 lg:col-span-4 space-y-6 lg:sticky lg:top-24 min-w-0 w-full">
+
+            <!-- EXQUISITE PATRON CARD -->
+            <div
+                class="gold-vip-card rounded-2xl p-6 text-white relative overflow-hidden flex flex-col justify-between h-56 gold-foil-border shadow-lg">
+                <!-- Background visual glow -->
+                <div
+                    class="absolute -right-12 -bottom-12 w-48 h-48 rounded-full bg-thesyl-gold/10 blur-3xl pointer-events-none">
+                </div>
+
+                <!-- Card Header -->
+                <div class="flex justify-between items-start relative z-10">
+                    <div class="min-w-0">
+                        <span
+                            class="text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-thesyl-gold/80 block truncate">Patron
+                            Identification</span>
+                        <h3 class="font-serif text-xl sm:text-2xl font-semibold tracking-wide mt-1 truncate">THESYL
+                            HOTEL</h3>
+                    </div>
+                    <!-- Custom SVG Laurel Logo Mini -->
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 text-thesyl-gold shrink-0">
+                        <svg class="w-full h-full" viewBox="0 0 100 100" fill="currentColor">
+                            <path
+                                d="M50,15 C45,25 35,30 25,35 C28,48 32,60 42,75 C45,80 50,85 50,85 C50,85 55,80 58,75 C68,60 72,48 75,35 C65,30 55,25 50,15 Z"
+                                fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="1 1.5" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Card Middle: Chip & Membership Tier status -->
+                <div class="relative z-10 my-3 flex items-center justify-between">
+                    <div class="min-w-0">
+                        <span class="text-[8px] uppercase tracking-widest text-white/50 block truncate">Elite Tier
+                            Placement</span>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span class="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-pulse shrink-0"></span>
+                            <span
+                                class="font-serif text-base sm:text-lg font-bold tracking-widest text-thesyl-gold truncate">GOLD
+                                PATRON</span>
+                        </div>
+                    </div>
+                    <!-- Smart Chip simulation -->
+                    <div class="w-9 h-7 bg-gradient-to-br from-yellow-300 to-yellow-600 rounded-md opacity-80 shrink-0">
+                    </div>
+                </div>
+
+                <!-- Card Footer: Name & Membership key -->
+                <div class="relative z-10 flex justify-between items-end border-t border-white/10 pt-3 gap-2">
+                    <div class="min-w-0">
+                        <span class="text-[8px] uppercase tracking-widest text-white/40 block truncate">Registered
+                            Holder</span>
+                        <span class="text-xs font-semibold uppercase tracking-wide text-white/90 block truncate">Eliakim
+                            W. K.</span>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <span class="text-[8px] uppercase tracking-widest text-white/40 block">Account Key</span>
+                        <span class="text-[10px] font-mono tracking-wider text-thesyl-gold">TH-7821-GOLD</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DISCOUNTS & PORTAL QUICK ACCESS STATS -->
+            <div class="bg-white rounded-2xl p-5 sm:p-6 border border-thesyl-gold/10 shadow-sm space-y-4">
+                <h4
+                    class="text-xs uppercase tracking-widest text-thesyl-dark/70 font-bold border-b border-thesyl-gold/10 pb-3">
+                    Patron Perks Tracker</h4>
+
+                <!-- Points balance -->
+                <div class="flex items-center justify-between py-2 gap-3">
+                    <div class="flex items-start gap-3 min-w-0">
+                        <span class="text-xl text-thesyl-gold shrink-0 mt-0.5"><i class="fa-solid fa-gift"></i></span>
+                        <div class="min-w-0">
+                            <span class="text-xs font-bold text-thesyl-dark block truncate">Patron Reward Points</span>
+                            <span class="text-[10px] text-thesyl-dark/50 block truncate">Redeemable for complimentary
+                                suites</span>
+                        </div>
+                    </div>
+                    <span class="text-sm font-bold text-thesyl-maroon shrink-0">14,250 PTS</span>
+                </div>
+
+                <!-- Wireless Access key -->
+                <div class="flex items-center justify-between py-2 border-t border-thesyl-gold/5 gap-3">
+                    <div class="flex items-start gap-3 min-w-0">
+                        <span class="text-xl text-thesyl-gold shrink-0 mt-0.5"><i class="fa-solid fa-wifi"></i></span>
+                        <div class="min-w-0">
+                            <span class="text-xs font-bold text-thesyl-dark block truncate">Secure Resort Wi-Fi</span>
+                            <span class="text-[10px] text-thesyl-dark/50 block truncate">Elite VIP Lounge Network</span>
+                        </div>
+                    </div>
+                    <button onclick="copyWifiKey('Thesyl_VIP_GoldPass_77')"
+                        class="px-2.5 py-1.5 bg-thesyl-sand hover:bg-thesyl-maroon hover:text-white text-[10px] font-bold text-thesyl-dark/80 rounded transition-all uppercase flex items-center gap-1 shrink-0">
+                        <i class="fa-regular fa-copy"></i> Copy
+                    </button>
+                </div>
+
+                <!-- Digital Room Key Simulation -->
+                <div class="flex items-center justify-between py-2 border-t border-thesyl-gold/5 gap-3">
+                    <div class="flex items-start gap-3 min-w-0">
+                        <span class="text-xl text-thesyl-gold shrink-0 mt-0.5"><i class="fa-solid fa-key"></i></span>
+                        <div class="min-w-0">
+                            <span class="text-xs font-bold text-thesyl-dark block truncate">Digital Key
+                                Activation</span>
+                            <span class="text-[10px] text-thesyl-dark/50 block truncate">Unlocked for room #304</span>
+                        </div>
+                    </div>
+                    <button onclick="simulateDigitalKeyUnlock()"
+                        class="px-2.5 py-1.5 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-[10px] font-bold text-white rounded transition-all uppercase flex items-center gap-1 shadow shrink-0">
+                        <i class="fa-solid fa-unlock-keyhole"></i> Unlock
+                    </button>
+                </div>
+            </div>
+
+            <!-- COMMUNITY TIER PROGRESSION EXPLANATION -->
+            <div class="bg-thesyl-sand/50 rounded-2xl p-5 sm:p-6 border border-thesyl-gold/10 space-y-3">
+                <h5 class="text-xs font-bold uppercase tracking-wider text-thesyl-dark">Community Tier Hierarchy</h5>
+                <p class="text-[11px] text-thesyl-dark/60 leading-relaxed font-light">
+                    Every patron stay climbs our community tiers. Benefits expand sequentially across the levels:
+                </p>
+                <div class="grid grid-cols-4 gap-1 sm:gap-2 text-center text-[9px] sm:text-[10px] font-bold pt-1">
+                    <div class="py-1 bg-white border border-thesyl-gold/20 rounded text-thesyl-dark/50 px-1 truncate">
+                        Silver</div>
+                    <div class="py-1 bg-white border border-thesyl-gold/20 rounded text-thesyl-dark/50 px-1 truncate">
+                        Diamond</div>
+                    <div class="py-1 bg-thesyl-maroon text-white rounded shadow-sm px-1 truncate">Gold</div>
+                    <div class="py-1 bg-white border border-thesyl-gold/20 rounded text-thesyl-dark/50 px-1 truncate">
+                        C-Suite</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT PANEL: Stay History, Desk Concierge, Announcement Center -->
+        <div class="col-span-12 lg:col-span-8 space-y-6 min-w-0 w-full">
+
+            <!-- EXCELLENT NAV TABS (Grid on mobile, flex on desktop to prevent horizontal scrolling) -->
+            <div
+                class="bg-white rounded-2xl p-2 sm:p-4 border border-thesyl-gold/10 shadow-sm grid grid-cols-3 gap-1 sm:flex sm:flex-nowrap sm:gap-4 overflow-hidden">
+                <button onclick="switchTab('stays-registry')" id="tab-stays-registry"
+                    class="tab-btn active py-2 text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-widest border-b-2 border-transparent transition-all text-center sm:px-4">
+                    <i class="fa-solid fa-clock-rotate-left block sm:inline mb-1 sm:mb-0 sm:mr-1.5"></i> Stays
+                </button>
+                <button onclick="switchTab('desk-concierge')" id="tab-desk-concierge"
+                    class="tab-btn py-2 text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-widest border-b-2 border-transparent transition-all text-center sm:px-4">
+                    <i class="fa-solid fa-bell-concierge block sm:inline mb-1 sm:mb-0 sm:mr-1.5"></i> Concierge
+                </button>
+                <button onclick="switchTab('executive-gazette')" id="tab-executive-gazette"
+                    class="tab-btn py-2 text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-widest border-b-2 border-transparent transition-all text-center sm:px-4">
+                    <i class="fa-solid fa-newspaper block sm:inline mb-1 sm:mb-0 sm:mr-1.5"></i> Feed
+                </button>
+            </div>
+
+            <!-- TABS CONTENT CONTAINER -->
+            <div class="space-y-6 w-full">
+
+                <!-- TAB 1: STAYS REGISTRY -->
+                <div id="content-stays-registry" class="tab-pane space-y-6 w-full">
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold text-thesyl-dark tracking-tight">Your Stay
+                        Registry</h3>
+                    <p class="text-xs text-thesyl-dark/60 -mt-4 leading-relaxed font-light">A curated timeline tracking
+                        your verified comfort periods within Thesyl Hotel suites.</p>
+
+                    <!-- Booking Timeline Card 1: Active Stay -->
+                    <div
+                        class="bg-white rounded-2xl border-l-4 border-thesyl-gold p-5 sm:p-6 shadow-sm relative group hover:shadow-md transition-all duration-300">
+                        <span
+                            class="inline-block sm:absolute top-5 sm:top-6 right-5 sm:right-6 bg-thesyl-gold/10 text-thesyl-goldDark text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 sm:mb-0">
+                            <i class="fa-solid fa-door-open"></i> Active Resident
+                        </span>
+
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-serif text-xl sm:text-2xl font-bold text-thesyl-dark">Thesyl Signature
+                                    Suite</h4>
+                                <span class="text-xs text-thesyl-dark/40 font-semibold uppercase tracking-wider">Room
+                                    #304</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 text-xs">
+                                <div>
+                                    <span
+                                        class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Check-In</span>
+                                    <span class="font-semibold text-thesyl-dark block truncate">Aug 12, 2026</span>
+                                </div>
+                                <div>
+                                    <span
+                                        class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Check-Out</span>
+                                    <span class="font-semibold text-thesyl-dark block truncate">Aug 17, 2026</span>
+                                </div>
+                                <div>
+                                    <span class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Guest
+                                        Count</span>
+                                    <span class="font-semibold text-thesyl-dark block truncate">2 Adults</span>
+                                </div>
+                                <div>
+                                    <span
+                                        class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Registry
+                                        Code</span>
+                                    <span
+                                        class="font-mono font-semibold text-thesyl-maroon block truncate">TY-60298-GP</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking Timeline Card 2: Historical Completed Stay -->
+                    <div
+                        class="bg-white/60 rounded-2xl border-l-4 border-thesyl-dark/30 p-5 sm:p-6 shadow-sm relative group hover:shadow-md transition-all duration-300">
+                        <span
+                            class="inline-block sm:absolute top-5 sm:top-6 right-5 sm:right-6 bg-thesyl-dark/5 text-thesyl-dark/60 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 sm:mb-0">
+                            <i class="fa-solid fa-circle-check"></i> Completed Stay
+                        </span>
+
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-serif text-xl sm:text-2xl font-bold text-thesyl-dark/80">Royal
+                                    Presidential Penthouse</h4>
+                                <span class="text-xs text-thesyl-dark/40 font-semibold uppercase tracking-wider">Suite
+                                    #501 (VIP Wing)</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 text-xs text-thesyl-dark/80">
+                                <div>
+                                    <span
+                                        class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Check-In</span>
+                                    <span class="font-semibold block truncate">Dec 18, 2025</span>
+                                </div>
+                                <div>
+                                    <span
+                                        class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Check-Out</span>
+                                    <span class="font-semibold block truncate">Dec 24, 2025</span>
+                                </div>
+                                <div>
+                                    <span class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Rate
+                                        Tier</span>
+                                    <span class="font-semibold block truncate">$390 / Night</span>
+                                </div>
+                                <div>
+                                    <span class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Receipt
+                                        Identifier</span>
+                                    <span
+                                        class="font-mono font-semibold text-thesyl-dark/60 block truncate">TY-49102-PT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking Timeline Card 3: Historical Completed Stay -->
+                    <div
+                        class="bg-white/60 rounded-2xl border-l-4 border-thesyl-dark/30 p-5 sm:p-6 shadow-sm relative group hover:shadow-md transition-all duration-300">
+                        <span
+                            class="inline-block sm:absolute top-5 sm:top-6 right-5 sm:right-6 bg-thesyl-dark/5 text-thesyl-dark/60 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 sm:mb-0">
+                            <i class="fa-solid fa-circle-check"></i> Completed Stay
+                        </span>
+
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-serif text-xl sm:text-2xl font-bold text-thesyl-dark/80">Classic Deluxe
+                                    Suite</h4>
+                                <span class="text-xs text-thesyl-dark/40 font-semibold uppercase tracking-wider">Room
+                                    #102</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 text-xs text-thesyl-dark/80">
+                                <div>
+                                    <span
+                                        class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Check-In</span>
+                                    <span class="font-semibold block truncate">July 10, 2025</span>
+                                </div>
+                                <div>
+                                    <span
+                                        class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Check-Out</span>
+                                    <span class="font-semibold block truncate">July 14, 2025</span>
+                                </div>
+                                <div>
+                                    <span class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Rate
+                                        Tier</span>
+                                    <span class="font-semibold block truncate">$150 / Night</span>
+                                </div>
+                                <div>
+                                    <span class="text-thesyl-dark/40 block uppercase tracking-wider text-[10px]">Receipt
+                                        Identifier</span>
+                                    <span
+                                        class="font-mono font-semibold text-thesyl-dark/60 block truncate">TY-18247-CL</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: DESK CONCIERGE -->
+                <div id="content-desk-concierge" class="tab-pane hidden space-y-6 w-full">
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold text-thesyl-dark tracking-tight">Direct Desk
+                        Concierge</h3>
+                    <p class="text-xs text-thesyl-dark/60 -mt-4 leading-relaxed font-light">Instantly dispatch
+                        customized request forms, log dynamic complaints, or place specialized suite booking requests
+                        directly to the head manager desk.</p>
+
+                    <div class="bg-white rounded-2xl p-5 sm:p-6 border border-thesyl-gold/10 shadow-sm">
+                        <form id="concierge-request-form" onsubmit="handleConciergeSubmit(event)" class="space-y-6">
+
+                            <!-- Dropdown categorization -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-2"
+                                        for="concierge-action">
+                                        Type of Concern / Request
+                                    </label>
+                                    <select id="concierge-action" required
+                                        class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon transition-all">
+                                        <option value="Amenity Request">Request Room Amenities (Pillows, Robes)</option>
+                                        <option value="Service Feedback">Log Service Feedback or Concern</option>
+                                        <option value="Special Custom Booking">Special Luxury Reservation Request
+                                        </option>
+                                        <option value="Executive Complaint">Escalate Executive Complaint to General
+                                            Manager</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-2"
+                                        for="room-association">
+                                        Room Associated
+                                    </label>
+                                    <select id="room-association" required
+                                        class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon transition-all">
+                                        <option value="Suite 304" selected>Suite 304 (Active Residence)</option>
+                                        <option value="Suite 501">Suite 501 (Historical)</option>
+                                        <option value="Room 102">Room 102 (Historical)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Title of Request -->
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-2"
+                                    for="request-title">
+                                    Inquiry Title / Summary
+                                </label>
+                                <input type="text" id="request-title" required
+                                    placeholder="e.g. Request extra goose-down pillows"
+                                    class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon transition-all">
+                            </div>
+
+                            <!-- Detailed Description -->
+                            <div>
+                                <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-2"
+                                    for="request-details">
+                                    Concise Details / Special Direct Instructions
+                                </label>
+                                <textarea id="request-details" required rows="5"
+                                    placeholder="Please elaborate precisely on how our executive hospitality staff can render your residency more complete..."
+                                    class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon transition-all resize-none"></textarea>
+                            </div>
+
+                            <!-- Submit action button -->
+                            <button type="submit"
+                                class="w-full py-4 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-xl text-xs tracking-wider uppercase transition-all duration-300 transform hover:-translate-y-0.5 shadow-md hover:shadow-lg">
+                                Dispatch Concierge Alert
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- TAB 3: EXECUTIVE ANNNOUNCEMENTS -->
+                <div id="content-executive-gazette" class="tab-pane hidden space-y-6 w-full">
+                    <h3 class="font-serif text-2xl sm:text-3xl font-bold text-thesyl-dark tracking-tight">Executive
+                        Communications Feed</h3>
+                    <p class="text-xs text-thesyl-dark/60 -mt-4 leading-relaxed font-light">Highly confidential
+                        messages, special updates, and VIP recommendations directly from the hotel executives to
+                        verified community patrons.</p>
+
+                    <!-- Message 1: Managing Director -->
+                    <div
+                        class="bg-white rounded-2xl p-5 sm:p-6 border border-thesyl-gold/10 shadow-sm space-y-4 hover:shadow-md transition-all">
+                        <div class="flex justify-between items-start gap-4">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div
+                                    class="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-thesyl-gold/20 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80"
+                                        alt="GM Portrait" class="w-full h-full object-cover">
+                                </div>
+                                <div class="min-w-0">
+                                    <h4
+                                        class="text-xs sm:text-sm font-bold text-thesyl-dark block leading-none truncate">
+                                        Osei K. Mensah</h4>
+                                    <span
+                                        class="text-[9px] uppercase tracking-wider text-thesyl-gold font-bold block truncate mt-1">General
+                                        Manager</span>
+                                </div>
+                            </div>
+                            <span class="text-[9px] sm:text-[10px] text-thesyl-dark/40 font-mono shrink-0">2 Hours
+                                Ago</span>
+                        </div>
+                        <h5 class="font-serif text-base sm:text-lg font-bold text-thesyl-maroon">Our New Private Garden
+                            Pavilion Launch</h5>
+                        <p class="text-xs text-thesyl-dark/70 leading-relaxed font-light">
+                            Dear Eliakim, as a cherished Gold Patron, I am extremely thrilled to announce the unveiling
+                            of our new botanical Sunset Lounge Pavilion. For Gold status holders, we are offering
+                            complimentary cocktail check-in packages starting this weekend. Let the reception desk staff
+                            know of your preferred reservation window. See you there!
+                        </p>
+                    </div>
+
+                    <!-- Message 2: Executive Head Chef -->
+                    <div
+                        class="bg-white rounded-2xl p-5 sm:p-6 border border-thesyl-gold/10 shadow-sm space-y-4 hover:shadow-md transition-all">
+                        <div class="flex justify-between items-start gap-4">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div
+                                    class="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-thesyl-gold/20 shrink-0">
+                                    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=150&q=80"
+                                        alt="Chef Portrait" class="w-full h-full object-cover">
+                                </div>
+                                <div class="min-w-0">
+                                    <h4
+                                        class="text-xs sm:text-sm font-bold text-thesyl-dark block leading-none truncate">
+                                        Chef Amara Boateng</h4>
+                                    <span
+                                        class="text-[9px] uppercase tracking-wider text-thesyl-gold font-bold block truncate mt-1">Executive
+                                        Chef</span>
+                                </div>
+                            </div>
+                            <span
+                                class="text-[9px] sm:text-[10px] text-thesyl-dark/40 font-mono shrink-0">Yesterday</span>
+                        </div>
+                        <h5 class="font-serif text-base sm:text-lg font-bold text-thesyl-maroon">Weekly Gastronomy
+                            Exclusives</h5>
+                        <p class="text-xs text-thesyl-dark/70 leading-relaxed font-light">
+                            Greetings. This Tuesday, my culinary team is crafting an experimental tasting table blending
+                            traditional Ghanaian culinary styles with modern Western plating paradigms. If you or your
+                            guests would love to book a dedicated seat at our private table session, please dispatch an
+                            inquiry via your 'Desk Concierge' tab so we can secure your plates.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- DYNAMIC POPUP TOAST SYSTEM (Secure premium UI notifications) -->
+    <div id="toast-wrapper" class="fixed top-6 right-6 z-50 space-y-3 pointer-events-none max-w-sm w-full"></div>
+
+    <!-- BACK TO HOME OR PROFILE LOGOUT BAR -->
+    <div class="text-center py-8">
+        <a href="index.html"
+            class="inline-flex items-center gap-2 text-xs font-semibold text-thesyl-dark/60 hover:text-thesyl-maroon transition-colors">
+            <i class="fa-solid fa-arrow-left-long"></i>
+            <span>Back to Main Thesyl Hotel Website</span>
+        </a>
+    </div>
+
+    <!-- PORTAL FOOTER -->
+    <footer
+        class="bg-thesyl-dark text-white py-6 px-4 sm:px-6 border-t border-white/10 text-center text-xs text-white/40">
+        <p>&copy; 2026 Thesyl Hotel Ltd. Fiapre Sunyani, Catholic University Road, Ghana. All rights reserved.</p>
+    </footer>
+
+    <!-- MOBILE STICKY BOTTOM SHORTCUT NAV FOR EASY TOUCH TABS (Perfectly aligned Grid) -->
+    <div class="lg:hidden fixed bottom-6 left-6 right-6 z-30 transition-all duration-300">
+        <div
+            class="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 grid grid-cols-3 h-16 items-center px-2">
+
+            <!-- Stays -->
+            <button onclick="switchTab('stays-registry')"
+                class="flex flex-col items-center justify-center text-thesyl-dark/70 hover:text-thesyl-maroon focus:outline-none h-full">
+                <span class="text-lg"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                <span class="text-[9px] uppercase font-bold tracking-wider mt-1">Stays</span>
+            </button>
+
+            <!-- Book (Main Link Back to Home Portal, Center Floated Aligning perfectly) -->
+            <div class="flex justify-center items-center h-full relative">
+                <a href="index.html"
+                    class="absolute -top-5 w-14 h-14 bg-thesyl-maroon text-white rounded-full flex flex-col items-center justify-center shadow-lg border-4 border-[#FAF8F5] transition-all duration-300 hover:scale-105">
+                    <span class="text-sm"><i class="fa-solid fa-hotel"></i></span>
+                    <span class="text-[8px] font-bold uppercase tracking-wide leading-none mt-1">Home</span>
+                </a>
+            </div>
+
+            <!-- Concierge Desk -->
+            <button onclick="switchTab('desk-concierge')"
+                class="flex flex-col items-center justify-center text-thesyl-dark/70 hover:text-thesyl-maroon focus:outline-none h-full">
+                <span class="text-lg"><i class="fa-solid fa-bell-concierge"></i></span>
+                <span class="text-[9px] uppercase font-bold tracking-wider mt-1">Concierge</span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC OPERATIONS -->
+    <script>
+        // Dynamic tabs switcher logic
+        function switchTab(tabId) {
+            // Hide all tab panes
+            document.querySelectorAll('.tab-pane').forEach(pane => {
+                pane.classList.add('hidden');
+            });
+
+            // Remove active classes from tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Display selected tab pane
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+
+            // Apply active class to selected button (for both desktop and potential custom navs)
+            const desktopTabBtn = document.getElementById(`tab-${tabId}`);
+            if (desktopTabBtn) {
+                desktopTabBtn.classList.add('active');
+            }
+
+            openToast(`Navigated to your ${tabId.replace('-', ' ')} dashboard.`, 'info');
+        }
+
+        // Custom high-end visual Toast notification handler
+        function openToast(message, type = 'success') {
+            const toastWrapper = document.getElementById('toast-wrapper');
+            const toast = document.createElement('div');
+
+            toast.className = `p-4 rounded-xl shadow-2xl border flex items-start gap-3 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto bg-white border-thesyl-gold/30 text-thesyl-dark`;
+
+            let icon = '<i class="fa-solid fa-circle-check text-green-600 text-lg"></i>';
+            if (type === 'error') {
+                icon = '<i class="fa-solid fa-circle-exclamation text-thesyl-maroon text-lg"></i>';
+            } else if (type === 'info') {
+                icon = '<i class="fa-solid fa-circle-info text-thesyl-gold text-lg"></i>';
+            }
+
+            toast.innerHTML = `
+                <div class="mt-0.5">${icon}</div>
+                <div class="flex-grow min-w-0">
+                    <p class="text-xs leading-relaxed font-medium break-words">${message}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-thesyl-dark/40 hover:text-thesyl-dark text-xs shrink-0"><i class="fa-solid fa-xmark"></i></button>
+            `;
+
+            toastWrapper.appendChild(toast);
+
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            }, 50);
+
+            // Dismiss after 5.5 seconds
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 5500);
+        }
+
+        // Copy Wifi Key Fallback system
+        function copyWifiKey(wifiPassword) {
+            const dummyInput = document.createElement('input');
+            document.body.appendChild(dummyInput);
+            dummyInput.value = wifiPassword;
+            dummyInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummyInput);
+            openToast(`Secure Wi-Fi key successfully cloned to clipboard.`, 'success');
+        }
+
+        // Dynamic key unlock simulation
+        function simulateDigitalKeyUnlock() {
+            openToast('Synchronizing digital token... Access permitted. Suite Room #304 handle has unlocked.', 'success');
+        }
+
+        // Handle Concierge Form Dispatch
+        function handleConciergeSubmit(event) {
+            event.preventDefault();
+            const action = document.getElementById('concierge-action').value;
+            const title = document.getElementById('request-title').value.trim();
+
+            openToast(`Your request for "${title}" has been securely logged under Category: [${action}]. Staff response dispatched!`, 'success');
+            document.getElementById('concierge-request-form').reset();
+        }
+
+        // Session Termination Simulation
+        function handleLogout() {
+            openToast('Closing secure session. Redirecting back to guest portal check-in...', 'info');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1200);
+        }
+    </script>
+</body>
+
+</html>

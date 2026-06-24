@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Portal Login | Thesyl Hotel Ltd.</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        thesyl: {
+                            maroon: '#801818',
+                            maroonHover: '#601010',
+                            gold: '#C5A880',
+                            goldDark: '#A3845A',
+                            cream: '#FAF8F5',
+                            sand: '#F3EFE9',
+                            dark: '#1C1917'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF8F5;
+            color: #1C1917;
+            overflow-x: hidden;
+        }
+
+        /* Warm sunset glow overlay matching the main hero section */
+        .login-glow-overlay {
+            background: linear-gradient(135deg, rgba(28, 25, 23, 0.95) 0%, rgba(128, 24, 24, 0.6) 100%);
+        }
+    </style>
+</head>
+
+<body
+    class="antialiased min-h-screen flex items-center justify-center relative bg-thesyl-cream selection:bg-thesyl-gold selection:text-white">
+
+    <!-- Top Left Brand Indicator -->
+    <div class="absolute top-6 left-6 z-30">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <img src="thesyl_logo.png" alt="Thesyl Logo" style="height: 44px;"
+                onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=80&q=80'; this.style.borderRadius='50%'">
+            <div class="hidden sm:block">
+                <span
+                    class="font-serif text-lg font-bold tracking-widest text-thesyl-maroon block leading-none">THESYL</span>
+                <span class="text-[8px] tracking-[0.2em] text-thesyl-dark/70 font-semibold">— GUEST COMMUNITY —</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- MAIN PORTAL WRAPPER (Split layout for widescreen, centered card for mobile) -->
+    <div class="w-full min-h-screen lg:grid lg:grid-cols-12">
+
+        <!-- Left Side: Visual Experience & Mission Statement (Visible on Desktop) -->
+        <div class="hidden lg:flex lg:col-span-5 relative flex-col justify-between p-12 text-white overflow-hidden">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="assets/hero.png" alt="Thesyl Hotel Building"
+                    class="w-full h-full object-cover object-center transform scale-105 hover:scale-100 transition-transform duration-10000"
+                    onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80'">
+                <div class="absolute inset-0 login-glow-overlay mix-blend-multiply"></div>
+            </div>
+
+            <div class="relative z-10 flex flex-col h-full justify-between">
+                <!-- Branding info -->
+                <div>
+                    <span class="text-thesyl-gold uppercase tracking-[0.25em] text-xs font-bold block mb-2">Exquisite
+                        Legacy</span>
+                    <h2 class="font-serif text-4xl font-semibold leading-tight text-white/95 max-w-sm">
+                        Patrons' Circle
+                    </h2>
+                    <div class="w-12 h-0.5 bg-thesyl-gold mt-4"></div>
+                </div>
+
+                <!-- Patrons community quote -->
+                <div class="space-y-4">
+                    <p class="font-serif text-2xl italic text-thesyl-sand font-light leading-relaxed">
+                        "An exclusive online enclave reserved specifically for those who have experienced the genuine
+                        comfort, quality, and class of Thesyl."
+                    </p>
+                    <div class="flex items-center gap-2">
+                        <div class="flex text-thesyl-gold text-[10px]">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-white/60">Verified Community
+                            Portal</span>
+                    </div>
+                </div>
+
+                <!-- Footer backlink -->
+                <div class="text-xs text-white/40">
+                    <p>&copy; 2026 Thesyl Hotel Ltd. Sunyani, Ghana</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Login Form Interface -->
+        <div class="col-span-12 lg:col-span-7 flex flex-col justify-center px-6 py-12 md:p-16 lg:p-24 relative">
+
+            <div class="max-w-md w-full mx-auto space-y-8">
+
+                <!-- Welcome Headers -->
+                <div class="text-left space-y-3">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 bg-thesyl-maroon/5 rounded-full border border-thesyl-maroon/10">
+                        <span class="w-2 h-2 rounded-full bg-thesyl-maroon animate-pulse"></span>
+                        <span class="text-[10px] font-bold text-thesyl-maroon uppercase tracking-wider">Client Registry
+                            Access</span>
+                    </div>
+                    <h3 class="font-serif text-4xl md:text-5xl font-bold text-thesyl-dark tracking-tight">Welcome Back
+                    </h3>
+                    <p class="text-xs md:text-sm text-thesyl-dark/60 leading-relaxed font-light">
+                        This digital circle is strictly for registered guests of **Thesyl Hotel Ltd.** Sign in using the
+                        email credentials or mobile records provided during your reservation.
+                    </p>
+                </div>
+
+                <!-- Closed Community Information Alert Box -->
+                <div class="bg-thesyl-sand/60 border-l-4 border-thesyl-gold p-4 rounded-r-xl space-y-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-thesyl-dark flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-thesyl-goldDark text-sm"></i>
+                        <span>No Public Account Creation</span>
+                    </h4>
+                    <p class="text-[11px] text-thesyl-dark/70 leading-relaxed font-light">
+                        Accounts are automatically configured upon checkout of your first suite reservation. No manual
+                        registration is available. If you have misplaced your booking profile credentials, please
+                        contact support.
+                    </p>
+                </div>
+
+                <!-- Login Credentials Form -->
+                <form id="login-form" onsubmit="handlePortalLogin(event)" class="space-y-5">
+
+                    <!-- Email input -->
+                    <div>
+                        <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-2" for="guest-email">
+                            Registered Booking Email
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-thesyl-dark/40">
+                                <i class="fa-solid fa-envelope"></i>
+                            </span>
+                            <input type="email" id="guest-email" required placeholder="name@example.com"
+                                class="w-full pl-10 pr-4 py-3 bg-white border border-thesyl-gold/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent transition-all shadow-sm">
+                        </div>
+                    </div>
+
+                    <!-- Password input with eye-toggle -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-xs uppercase font-bold text-thesyl-dark/70" for="guest-password">
+                                Security Code / Password
+                            </label>
+                            <a href="#" onclick="triggerForgotPassword(event)"
+                                class="text-[11px] font-bold text-thesyl-maroon hover:text-thesyl-gold transition-colors">
+                                Forgotten Code?
+                            </a>
+                        </div>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-thesyl-dark/40">
+                                <i class="fa-solid fa-lock"></i>
+                            </span>
+                            <input type="password" id="guest-password" required placeholder="••••••••"
+                                class="w-full pl-10 pr-12 py-3 bg-white border border-thesyl-gold/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent transition-all shadow-sm">
+                            <button type="button" onclick="togglePasswordVisibility()"
+                                class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-thesyl-dark/40 hover:text-thesyl-dark transition-colors"
+                                aria-label="Toggle password visibility">
+                                <i id="password-toggle-icon" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Remember session -->
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                            <input type="checkbox" id="remember-me"
+                                class="rounded border-thesyl-gold/30 text-thesyl-maroon focus:ring-thesyl-maroon h-4 w-4">
+                            <span class="text-xs text-thesyl-dark/60">Remember my patron key</span>
+                        </label>
+                    </div>
+
+                    <!-- Submit action -->
+                    <button type="submit"
+                        class="w-full py-4 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-xl text-xs tracking-wider uppercase transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg shadow-thesyl-maroon/20 hover:shadow-xl">
+                        Verify & Secure Login
+                    </button>
+                </form>
+
+                <!-- Helpful Links Back to home -->
+                <div class="text-center pt-4">
+                    <a href="index.html"
+                        class="inline-flex items-center gap-2 text-xs font-semibold text-thesyl-dark/60 hover:text-thesyl-maroon transition-colors">
+                        <i class="fa-solid fa-arrow-left-long"></i>
+                        <span>Back to Main Thesyl Site</span>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- DYNAMIC POPUP TOAST SYSTEM (Sleek UI errors/success) -->
+    <div id="toast-wrapper" class="fixed top-6 right-6 z-50 space-y-3 pointer-events-none max-w-sm w-full"></div>
+
+    <script>
+        // Toggle password character visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('guest-password');
+            const toggleIcon = document.getElementById('password-toggle-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Custom premium toast notifications
+        function openToast(message, type = 'error') {
+            const toastWrapper = document.getElementById('toast-wrapper');
+            const toast = document.createElement('div');
+
+            // Layout classes depending on success/error styles
+            toast.className = `p-4 rounded-xl shadow-2xl border flex items-start gap-3 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto bg-white border-thesyl-gold/30 text-thesyl-dark`;
+
+            let icon = '<i class="fa-solid fa-circle-exclamation text-thesyl-maroon text-lg"></i>';
+            if (type === 'success') {
+                icon = '<i class="fa-solid fa-circle-check text-green-600 text-lg"></i>';
+            } else if (type === 'info') {
+                icon = '<i class="fa-solid fa-circle-info text-thesyl-gold text-lg"></i>';
+            }
+
+            toast.innerHTML = `
+                <div class="mt-0.5">${icon}</div>
+                <div class="flex-grow">
+                    <p class="text-xs leading-relaxed font-medium">${message}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-thesyl-dark/40 hover:text-thesyl-dark text-xs"><i class="fa-solid fa-xmark"></i></button>
+            `;
+
+            toastWrapper.appendChild(toast);
+
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            }, 50);
+
+            // Auto dismiss after 6 seconds
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 6000);
+        }
+
+        // Handle Portal Login Attempt
+        function handlePortalLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('guest-email').value.trim();
+            const password = document.getElementById('guest-password').value;
+
+            // Mandatory credentials request verification
+            if (email === 'elpyronsystems@gmail.com' && password === '12345') {
+                openToast('Credentials verified! Securing entry session. Redirecting to profile page...', 'success');
+
+                // Redirect on simulated successful auth
+                setTimeout(() => {
+                    window.location.href = 'profile.html';
+                }, 1500);
+            } else {
+                openToast('Access Denied. We could not locate matching guest records or credentials for this portal under ' + email + '. Verify details or contact hotel concierge Desk.', 'error');
+            }
+        }
+
+        // Recover forgot passwords
+        function triggerForgotPassword(event) {
+            event.preventDefault();
+            const email = document.getElementById('guest-email').value.trim();
+
+            if (email) {
+                openToast('An account recovery code has been requested for ' + email + '. If you have stayed at Thesyl previously, a temporal entry code will land in your SMS/Inbox soon.', 'info');
+            } else {
+                openToast('Please input your registered checkout email in the field first so we can verify previous guest profiles.', 'info');
+            }
+        }
+    </script>
+</body>
+
+</html>

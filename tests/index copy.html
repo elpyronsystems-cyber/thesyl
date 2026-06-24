@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thesyl Hotel Ltd. | Comfort, Quality & Great Hospitality</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display for Serifs & Inter for clean text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        thesyl: {
+                            red: '#8B1E24',
+                            redHover: '#6D151A',
+                            gold: '#C59B27',
+                            goldLight: '#E8D296',
+                            dark: '#1C1516',
+                            cream: '#FAF6F0',
+                            sand: '#F2ECE1',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Curtain menu animation */
+        .curtain-menu {
+            clip-path: circle(0% at 100% 0%);
+            transition: clip-path 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .curtain-menu.active {
+            clip-path: circle(150% at 100% 0%);
+        }
+
+        /* Hero background gradient matching the uploaded sunset warm tone */
+        .hero-bg {
+            background: linear-gradient(to right, rgba(250, 246, 240, 0.92) 30%, rgba(250, 246, 240, 0.4) 60%, rgba(26, 15, 10, 0.1) 100%),
+                url('hero.png') center center no-repeat;
+            background-size: cover;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-bg {
+                background: linear-gradient(to bottom, rgba(250, 246, 240, 0.95) 40%, rgba(250, 246, 240, 0.6) 70%, rgba(26, 15, 10, 0.2) 100%),
+                    url('mobile_hero.png') center center no-repeat;
+                background-size: cover;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF6F0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8B1E24;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6D151A;
+        }
+
+        /* Custom styles for matching the layout precisely */
+        .gold-border-decor::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background-color: #C59B27;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body class="bg-thesyl-cream text-thesyl-dark font-sans overflow-x-hidden">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent py-4 px-6 lg:px-16"
+        id="mainHeader">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+
+            <!-- Logo Design matching uploaded image -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="logo.png" alt="Thesyl Hotel Logo" style="height: 70px; max-height: 70px;">
+            </a>
+
+            <!-- Desktop Nav Links & Book Button -->
+            <div class="hidden lg:flex items-center gap-8">
+                <nav class="flex items-center gap-8 font-medium text-sm tracking-wider uppercase text-thesyl-dark">
+                    <a href="#about" class="hover:text-thesyl-red transition-colors duration-200">About</a>
+                    <a href="#suites" class="hover:text-thesyl-red transition-colors duration-200">Suites</a>
+                    <a href="#facilities" class="hover:text-thesyl-red transition-colors duration-200">Facilities</a>
+                    <a href="#experience" class="hover:text-thesyl-red transition-colors duration-200">Experience</a>
+                    <a href="#contact" class="hover:text-thesyl-red transition-colors duration-200">Contact</a>
+                </nav>
+                <a href="#bookingModal" onclick="openBookingModal()"
+                    class="bg-thesyl-red hover:bg-thesyl-redHover text-white px-6 py-2.5 rounded-md font-semibold text-sm tracking-widest uppercase transition-all duration-300 shadow-md">
+                    Book Now
+                </a>
+            </div>
+
+            <!-- Hamburger menu button -->
+            <button
+                class="z-50 p-3 rounded-md focus:outline-none lg:hidden flex flex-col justify-between h-10 w-11 bg-thesyl-red text-white"
+                id="menuToggleBtn">
+                <span class="w-full h-0.5 bg-white rounded-full transition-transform duration-300 origin-left"
+                    id="bar1"></span>
+                <span class="w-full h-0.5 bg-white rounded-full transition-opacity duration-300" id="bar2"></span>
+                <span class="w-full h-0.5 bg-white rounded-full transition-transform duration-300 origin-left"
+                    id="bar3"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- CURTAIN OVERLAY MOBILE NAVIGATION -->
+    <div class="fixed inset-0 bg-thesyl-dark z-40 curtain-menu flex flex-col justify-center items-center text-center p-8"
+        id="mobileMenu">
+        <!-- Logo duplication inside Menu for premium aesthetic -->
+        <div class="mb-12 flex flex-col items-center">
+            <div
+                class="border border-thesyl-gold rounded-full w-20 h-20 flex items-center justify-center bg-white shadow-md">
+                <span class="font-serif text-4xl font-bold text-thesyl-dark">T</span>
+            </div>
+            <span class="block text-2xl font-serif font-bold tracking-widest text-thesyl-gold mt-3">THESYL</span>
+            <span class="block text-[10px] tracking-[0.2em] uppercase font-semibold text-white/70 mt-1">— HOTEL LTD.
+                —</span>
+        </div>
+        <nav class="flex flex-col gap-6 text-xl md:text-2xl font-serif text-white tracking-wide">
+            <a href="#about" onclick="toggleMobileMenu()"
+                class="hover:text-thesyl-gold transition-colors duration-200">Great Hospitality</a>
+            <a href="#suites" onclick="toggleMobileMenu()"
+                class="hover:text-thesyl-gold transition-colors duration-200">Executive Suites</a>
+            <a href="#facilities" onclick="toggleMobileMenu()"
+                class="hover:text-thesyl-gold transition-colors duration-200">Hotel Facilities</a>
+            <a href="#experience" onclick="toggleMobileMenu()"
+                class="hover:text-thesyl-gold transition-colors duration-200">The Experience</a>
+            <a href="#contact" onclick="toggleMobileMenu()"
+                class="hover:text-thesyl-gold transition-colors duration-200">Location &amp; Contact</a>
+        </nav>
+        <div class="mt-12 flex flex-col sm:flex-row gap-4 w-full max-w-xs">
+            <a href="#bookingModal" onclick="toggleMobileMenu(); openBookingModal();"
+                class="bg-thesyl-gold hover:bg-yellow-600 text-thesyl-dark font-semibold py-3 px-6 rounded-md tracking-wider uppercase text-sm transition-all text-center">
+                Book Room
+            </a>
+            <a href="tel:+233302000000"
+                class="border border-white/30 text-white hover:bg-white/10 font-semibold py-3 px-6 rounded-md tracking-wider uppercase text-sm transition-all text-center">
+                Call Reception
+            </a>
+        </div>
+    </div>
+
+
+    <!-- 1. HERO SECTION (Desktop & Mobile optimized match) -->
+    <section class="relative min-h-screen hero-bg flex flex-col justify-between pt-28 lg:pt-32 pb-8 lg:pb-12" id="hero">
+
+        <!-- Content wrapper -->
+        <div class="max-w-7xl mx-auto w-full px-6 lg:px-16 flex-grow flex items-center">
+            <div class="max-w-xl lg:max-w-2xl py-12">
+                <span
+                    class="block text-sm lg:text-lg uppercase tracking-[0.3em] font-bold text-thesyl-gold mb-3 lg:mb-4">
+                    Comfort, Quality &amp;
+                </span>
+
+                <h1
+                    class="font-serif text-5xl lg:text-8xl font-normal text-thesyl-dark leading-[1.05] tracking-tight mb-6 gold-border-decor">
+                    Great<br>Hospitality
+                </h1>
+
+                <p class="text-base lg:text-lg text-thesyl-dark/80 font-normal leading-relaxed max-w-md mt-6 mb-8">
+                    Experience a perfect blend of comfort, elegance and warm hospitality. Located in the heart of
+                    serenity.
+                </p>
+
+                <!-- Premium CTA with inline styled icon arrow -->
+                <a href="#bookingModal" onclick="openBookingModal()"
+                    class="inline-flex items-center gap-3 bg-thesyl-red hover:bg-thesyl-redHover text-white px-8 py-4 rounded-md font-semibold text-sm lg:text-base tracking-wider uppercase transition-all duration-300 shadow-lg group">
+                    <span>Book Your Stay</span>
+                    <i class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- FLOATING AMENITIES BAR (Desktop: exact replica of image 1) -->
+        <div class="hidden lg:block max-w-7xl mx-auto w-full px-16">
+            <div
+                class="bg-black/55 backdrop-blur-md rounded-xl p-6 border border-white/10 text-white grid grid-cols-5 gap-6 divide-x divide-white/10 shadow-2xl">
+                <div class="flex items-center gap-4 pl-4 first:pl-0">
+                    <div class="text-thesyl-gold text-2xl">
+                        <i class="fa-solid fa-bed"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider font-bold text-white">Comfortable</h4>
+                        <p class="text-[10px] uppercase tracking-widest text-gray-300 mt-0.5">Rooms</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 pl-4">
+                    <div class="text-thesyl-gold text-2xl">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider font-bold text-white">Restaurant</h4>
+                        <p class="text-[10px] uppercase tracking-widest text-gray-300 mt-0.5">&amp; Bar</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 pl-4">
+                    <div class="text-thesyl-gold text-2xl">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider font-bold text-white">Free</h4>
+                        <p class="text-[10px] uppercase tracking-widest text-gray-300 mt-0.5">Wifi Connection</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 pl-4">
+                    <div class="text-thesyl-gold text-2xl">
+                        <i class="fa-solid fa-square-parking"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider font-bold text-white">Secure</h4>
+                        <p class="text-[10px] uppercase tracking-widest text-gray-300 mt-0.5">Parking Area</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 pl-4">
+                    <div class="text-thesyl-gold text-2xl">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider font-bold text-white">Excellent</h4>
+                        <p class="text-[10px] uppercase tracking-widest text-gray-300 mt-0.5">Service Team</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLOATING BOTTOM NAVIGATION (Mobile: exact replica of image 2) -->
+        <div class="lg:hidden fixed bottom-4 left-4 right-4 z-30">
+            <div
+                class="bg-[#e4d6be]/90 backdrop-blur-md rounded-full shadow-2xl px-6 py-2 border border-white/20 flex justify-between items-center max-w-md mx-auto">
+                <a href="#hero" class="flex flex-col items-center gap-1 text-thesyl-red">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center bg-white/40">
+                        <i class="fa-solid fa-house text-sm"></i>
+                    </div>
+                    <span class="text-[9px] uppercase tracking-wider font-bold">Home</span>
+                </a>
+                <a href="#suites"
+                    class="flex flex-col items-center gap-1 text-thesyl-dark/70 hover:text-thesyl-red transition-all">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white/40">
+                        <i class="fa-solid fa-bed text-sm"></i>
+                    </div>
+                    <span class="text-[9px] uppercase tracking-wider font-bold">Suites</span>
+                </a>
+
+                <!-- Main Center Action Button (Book Circle) -->
+                <a href="#bookingModal" onclick="openBookingModal()"
+                    class="flex flex-col items-center justify-center -mt-6">
+                    <div
+                        class="w-14 h-14 rounded-full bg-thesyl-red text-white flex items-center justify-center shadow-lg border-4 border-thesyl-cream transition-transform active:scale-95">
+                        <i class="fa-solid fa-calendar-days text-lg"></i>
+                    </div>
+                    <span class="text-[9px] uppercase tracking-wider font-bold text-thesyl-red mt-1">Book</span>
+                </a>
+
+                <a href="#facilities"
+                    class="flex flex-col items-center gap-1 text-thesyl-dark/70 hover:text-thesyl-red transition-all">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white/40">
+                        <i class="fa-solid fa-bell text-sm"></i>
+                    </div>
+                    <span class="text-[9px] uppercase tracking-wider font-bold">Facilities</span>
+                </a>
+                <a href="#contact"
+                    class="flex flex-col items-center gap-1 text-thesyl-dark/70 hover:text-thesyl-red transition-all">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center bg-white/20 hover:bg-white/40">
+                        <i class="fa-solid fa-address-card text-sm"></i>
+                    </div>
+                    <span class="text-[9px] uppercase tracking-wider font-bold">Account</span>
+                </a>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- 2. "GREAT HOSPITALITY" (ABOUT SECTION) -->
+    <section class="py-20 lg:py-32 px-6 lg:px-16 max-w-7xl mx-auto" id="about">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            <!-- Left Side: Image collage depicting premium hotel living -->
+            <div class="relative">
+                <div class="relative rounded-2xl overflow-hidden shadow-2xl">
+                    <img src="assets/pic2.avif" alt="Thesyl Fine Dining"
+                        class="w-full h-[350px] lg:h-[500px] object-cover hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                </div>
+
+                <!-- Floating badge mimicking the logo credentials -->
+                <div
+                    class="absolute -bottom-6 -right-6 bg-thesyl-gold text-white p-6 rounded-2xl hidden md:flex flex-col items-center shadow-xl max-w-[200px]">
+                    <span class="font-serif text-3xl font-bold">3★</span>
+                    <span class="text-[10px] uppercase tracking-widest font-bold text-center mt-1">STAR RATED
+                        HOSPITALITY</span>
+                    <div class="w-10 h-[1px] bg-white/30 my-2"></div>
+                    <p class="text-xs text-white/80 text-center">Unmatched comfort in the regional capital.</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Content -->
+            <div>
+                <span class="text-xs lg:text-sm uppercase tracking-[0.25em] font-bold text-thesyl-gold mb-3 block">
+                    Welcome to Thesyl Hotel
+                </span>
+                <h2 class="font-serif text-3xl lg:text-5xl font-normal text-thesyl-dark leading-tight mb-6">
+                    A Legacy of Comfort &amp; Remarkable Service
+                </h2>
+                <div class="w-16 h-1 bg-thesyl-red mb-6"></div>
+                <p class="text-thesyl-dark/80 leading-relaxed mb-6">
+                    At Thesyl Hotel Ltd., we define premium hospitality through our attention to detail, modern
+                    architectural charm, and warm personnel. Whether you are traveling for business, planning a getaway,
+                    or seeking an executive workspace, our elegant rooms and facilities cater to your absolute
+                    satisfaction.
+                </p>
+                <p class="text-thesyl-dark/80 leading-relaxed mb-8">
+                    Strategically located to balance privacy and accessibility, our guests enjoy high-end security,
+                    seamless transit connections, and a pristine environment perfect for relaxation.
+                </p>
+
+                <!-- Interactive Accolades / Stats counter -->
+                <div class="grid grid-cols-3 gap-4 lg:gap-8 border-t border-thesyl-dark/10 pt-8">
+                    <div>
+                        <span class="block font-serif text-3xl lg:text-4xl font-bold text-thesyl-red">45+</span>
+                        <span class="text-xs uppercase tracking-wider text-thesyl-dark/60 mt-1 block">Luxury
+                            Suites</span>
+                    </div>
+                    <div>
+                        <span class="block font-serif text-3xl lg:text-4xl font-bold text-thesyl-red">100%</span>
+                        <span class="text-xs uppercase tracking-wider text-thesyl-dark/60 mt-1 block">Happy
+                            Clients</span>
+                    </div>
+                    <div>
+                        <span class="block font-serif text-3xl lg:text-4xl font-bold text-thesyl-red">24/7</span>
+                        <span class="text-xs uppercase tracking-wider text-thesyl-dark/60 mt-1 block">Security &amp;
+                            Support</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- 3. "EXECUTIVE SUITES" SECTION -->
+    <section class="py-20 lg:py-32 bg-thesyl-sand px-6 lg:px-16" id="suites">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-16">
+                <div>
+                    <span class="text-xs lg:text-sm uppercase tracking-[0.25em] font-bold text-thesyl-gold mb-3 block">
+                        Our Sanctum
+                    </span>
+                    <h2 class="font-serif text-3xl lg:text-5xl font-normal text-thesyl-dark">
+                        Executive Suites
+                    </h2>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <a href="#contact"
+                        class="inline-flex items-center gap-2 text-thesyl-red hover:text-thesyl-redHover font-bold uppercase tracking-wider text-sm transition-colors group">
+                        <span>Inquire About Rates</span>
+                        <i class="fa-solid fa-chevron-right transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Suites Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Suite 1 -->
+                <div
+                    class="bg-thesyl-cream rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80"
+                            alt="Deluxe Room"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span
+                            class="absolute top-4 right-4 bg-thesyl-red text-white font-semibold text-xs tracking-widest uppercase px-3 py-1 rounded">
+                            Popular
+                        </span>
+                    </div>
+                    <div class="p-8 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="font-serif text-2xl font-bold text-thesyl-dark">Deluxe Executive Room</h3>
+                                <span class="text-thesyl-red font-bold text-lg">$120<span
+                                        class="text-xs font-sans text-thesyl-dark/50">/night</span></span>
+                            </div>
+                            <p class="text-sm text-thesyl-dark/70 mb-6">
+                                Perfect for business executives looking for premium comfort with an elegant work area,
+                                high-speed fiber internet and complimentary coffee.
+                            </p>
+                            <!-- Amenities checklist -->
+                            <div
+                                class="flex flex-wrap gap-x-4 gap-y-2 mb-6 text-xs text-thesyl-dark/60 border-t border-thesyl-dark/5 pt-4">
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-wifi text-thesyl-gold"></i> Free WiFi</span>
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-wind text-thesyl-gold"></i> AC</span>
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-tv text-thesyl-gold"></i>
+                                    Smart TV</span>
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-mug-hot text-thesyl-gold"></i> Breakfast</span>
+                            </div>
+                        </div>
+                        <button onclick="openBookingModal('Deluxe Executive Room')"
+                            class="w-full py-3 border border-thesyl-red text-thesyl-red hover:bg-thesyl-red hover:text-white transition-all duration-300 font-bold uppercase tracking-wider text-xs rounded-lg">
+                            Configure Booking
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Suite 2 -->
+                <div
+                    class="bg-thesyl-cream rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80"
+                            alt="Presidential Suite"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span
+                            class="absolute top-4 right-4 bg-thesyl-gold text-white font-semibold text-xs tracking-widest uppercase px-3 py-1 rounded">
+                            Premium
+                        </span>
+                    </div>
+                    <div class="p-8 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="font-serif text-2xl font-bold text-thesyl-dark">Royal Presidential Suite</h3>
+                                <span class="text-thesyl-red font-bold text-lg">$250<span
+                                        class="text-xs font-sans text-thesyl-dark/50">/night</span></span>
+                            </div>
+                            <p class="text-sm text-thesyl-dark/70 mb-6">
+                                Experience ultimate royalty. Features a spacious private master lounge, luxury dining
+                                bar, personal safe, and breathtaking balcony city views.
+                            </p>
+                            <!-- Amenities checklist -->
+                            <div
+                                class="flex flex-wrap gap-x-4 gap-y-2 mb-6 text-xs text-thesyl-dark/60 border-t border-thesyl-dark/5 pt-4">
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-wifi text-thesyl-gold"></i> Free WiFi</span>
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-wind text-thesyl-gold"></i> AC</span>
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-martini-glass text-thesyl-gold"></i> Mini Bar</span>
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-bell text-thesyl-gold"></i> 24h Butler</span>
+                            </div>
+                        </div>
+                        <button onclick="openBookingModal('Royal Presidential Suite')"
+                            class="w-full py-3 border border-thesyl-red text-thesyl-red hover:bg-thesyl-red hover:text-white transition-all duration-300 font-bold uppercase tracking-wider text-xs rounded-lg">
+                            Configure Booking
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Suite 3 -->
+                <div
+                    class="bg-thesyl-cream rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col group">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80"
+                            alt="Standard King"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-8 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="font-serif text-2xl font-bold text-thesyl-dark">Standard King Bed</h3>
+                                <span class="text-thesyl-red font-bold text-lg">$95<span
+                                        class="text-xs font-sans text-thesyl-dark/50">/night</span></span>
+                            </div>
+                            <p class="text-sm text-thesyl-dark/70 mb-6">
+                                A highly cozy, fully optimized king-sized bed arrangement perfect for solo travelers,
+                                business consultants, and temporary tourist stays.
+                            </p>
+                            <!-- Amenities checklist -->
+                            <div
+                                class="flex flex-wrap gap-x-4 gap-y-2 mb-6 text-xs text-thesyl-dark/60 border-t border-thesyl-dark/5 pt-4">
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-wifi text-thesyl-gold"></i> Free WiFi</span>
+                                <span class="flex items-center gap-1.5"><i
+                                        class="fa-solid fa-wind text-thesyl-gold"></i> AC</span>
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-tv text-thesyl-gold"></i>
+                                    Smart TV</span>
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-car text-thesyl-gold"></i>
+                                    Valet</span>
+                            </div>
+                        </div>
+                        <button onclick="openBookingModal('Standard King Bed')"
+                            class="w-full py-3 border border-thesyl-red text-thesyl-red hover:bg-thesyl-red hover:text-white transition-all duration-300 font-bold uppercase tracking-wider text-xs rounded-lg">
+                            Configure Booking
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 4. "FACILITIES" SECTION -->
+    <section class="py-20 lg:py-32 px-6 lg:px-16 bg-thesyl-cream" id="facilities">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
+                <span class="text-xs lg:text-sm uppercase tracking-[0.25em] font-bold text-thesyl-gold mb-3 block">
+                    Tailored Amenities
+                </span>
+                <h2 class="font-serif text-3xl lg:text-5xl font-normal text-thesyl-dark leading-tight">
+                    Modern Facilities Designed For Ultimate Comfort
+                </h2>
+                <div class="w-12 h-1 bg-thesyl-red mx-auto mt-4"></div>
+            </div>
+
+            <!-- Facilities Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- Facility 1 -->
+                <div
+                    class="p-8 bg-thesyl-sand rounded-2xl hover:bg-thesyl-red hover:text-white transition-all duration-300 group shadow-md flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-14 h-14 bg-thesyl-red text-white group-hover:bg-white group-hover:text-thesyl-red rounded-xl flex items-center justify-center text-2xl transition-all duration-300 mb-6">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold mb-3 group-hover:text-white transition-colors">Gourmet
+                            Restaurant &amp; Bar</h3>
+                        <p class="text-sm text-thesyl-dark/70 group-hover:text-white/80 transition-colors">
+                            Indulge in multi-cuisine delights curated by award-winning chefs, paired with premium drinks
+                            and spirits.
+                        </p>
+                    </div>
+                    <span
+                        class="block text-xs uppercase tracking-wider font-semibold text-thesyl-gold mt-6 group-hover:text-white">Open
+                        24 Hours</span>
+                </div>
+
+                <!-- Facility 2 -->
+                <div
+                    class="p-8 bg-thesyl-sand rounded-2xl hover:bg-thesyl-red hover:text-white transition-all duration-300 group shadow-md flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-14 h-14 bg-thesyl-red text-white group-hover:bg-white group-hover:text-thesyl-red rounded-xl flex items-center justify-center text-2xl transition-all duration-300 mb-6">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold mb-3 group-hover:text-white transition-colors">
+                            Conference Halls</h3>
+                        <p class="text-sm text-thesyl-dark/70 group-hover:text-white/80 transition-colors">
+                            Fully equipped with modern projectors, high-definition acoustics and soundproofing for
+                            dynamic business meetings.
+                        </p>
+                    </div>
+                    <span
+                        class="block text-xs uppercase tracking-wider font-semibold text-thesyl-gold mt-6 group-hover:text-white">Reservations
+                        Required</span>
+                </div>
+
+                <!-- Facility 3 -->
+                <div
+                    class="p-8 bg-thesyl-sand rounded-2xl hover:bg-thesyl-red hover:text-white transition-all duration-300 group shadow-md flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-14 h-14 bg-thesyl-red text-white group-hover:bg-white group-hover:text-thesyl-red rounded-xl flex items-center justify-center text-2xl transition-all duration-300 mb-6">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold mb-3 group-hover:text-white transition-colors">Strict
+                            Security protocols</h3>
+                        <p class="text-sm text-thesyl-dark/70 group-hover:text-white/80 transition-colors">
+                            Peace of mind guaranteed with armed surveillance personnel, electronic card access control
+                            and persistent CCTV monitoring.
+                        </p>
+                    </div>
+                    <span
+                        class="block text-xs uppercase tracking-wider font-semibold text-thesyl-gold mt-6 group-hover:text-white">Guaranteed
+                        Safety</span>
+                </div>
+
+                <!-- Facility 4 -->
+                <div
+                    class="p-8 bg-thesyl-sand rounded-2xl hover:bg-thesyl-red hover:text-white transition-all duration-300 group shadow-md flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="w-14 h-14 bg-thesyl-red text-white group-hover:bg-white group-hover:text-thesyl-red rounded-xl flex items-center justify-center text-2xl transition-all duration-300 mb-6">
+                            <i class="fa-solid fa-car-rear"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold mb-3 group-hover:text-white transition-colors">Valet
+                            &amp; Secure Parking</h3>
+                        <p class="text-sm text-thesyl-dark/70 group-hover:text-white/80 transition-colors">
+                            Spacious secure layout that accommodates large corporate caravans with responsive valet
+                            drivers at your beck and call.
+                        </p>
+                    </div>
+                    <span
+                        class="block text-xs uppercase tracking-wider font-semibold text-thesyl-gold mt-6 group-hover:text-white">Complimentary
+                        Entry</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 5. "VISIT THESYL" CTA BANNER SECTION -->
+    <section class="relative py-28 lg:py-36 bg-thesyl-dark text-white px-6 overflow-hidden">
+        <!-- Parallax/Static background helper -->
+        <div class="absolute inset-0 z-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80"
+                alt="Thesyl Lobby Background" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-thesyl-dark via-thesyl-dark/95 to-transparent z-10"></div>
+
+        <div
+            class="relative z-20 max-w-7xl mx-auto text-center lg:text-left grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+            <div class="lg:col-span-8">
+                <span class="text-xs lg:text-sm uppercase tracking-[0.25em] font-bold text-thesyl-gold mb-3 block">
+                    Experience Premium Living Firsthand
+                </span>
+                <h2 class="font-serif text-4xl lg:text-6xl font-normal leading-tight">
+                    Ready to Visit Thesyl Hotel?
+                </h2>
+                <p class="text-gray-300 max-w-2xl mt-4 text-base lg:text-lg">
+                    Whether booking a last-minute business stay, planning a grand event in our executive facilities, or
+                    treating your family to high-class cuisine, our reservation office is standing by.
+                </p>
+            </div>
+
+            <!-- Double-action buttons matching description -->
+            <div
+                class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-4 justify-center items-stretch sm:max-w-md sm:mx-auto lg:w-full">
+                <a href="#bookingModal" onclick="openBookingModal()"
+                    class="bg-thesyl-red hover:bg-thesyl-redHover text-white font-bold py-4 px-8 rounded-lg tracking-wider uppercase text-sm transition-all duration-300 text-center shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-hotel"></i>
+                    <span>Book Your Suite Now</span>
+                </a>
+                <a href="tel:+233302000000"
+                    class="border-2 border-white/40 hover:bg-white hover:text-thesyl-dark text-white font-bold py-4 px-8 rounded-lg tracking-wider uppercase text-sm transition-all duration-300 text-center flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>Give Us A Call</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- 6. "THE EXPERIENCE" (GALLERY SECTION) -->
+    <section class="py-20 lg:py-32 bg-thesyl-cream px-6 lg:px-16" id="experience">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
+                <div>
+                    <span class="text-xs lg:text-sm uppercase tracking-[0.25em] font-bold text-thesyl-gold mb-3 block">
+                        Our Atmosphere
+                    </span>
+                    <h2 class="font-serif text-3xl lg:text-5xl font-normal text-thesyl-dark">
+                        The Experience
+                    </h2>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <button onclick="openGalleryFilter('all')"
+                        class="bg-thesyl-red text-white hover:bg-thesyl-redHover px-5 py-2.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all">
+                        View All Media
+                    </button>
+                </div>
+            </div>
+
+            <!-- Media Category Selector Tabs -->
+            <div class="flex flex-wrap gap-2 mb-8">
+                <button onclick="filterGallery('all', this)"
+                    class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all bg-thesyl-red text-white gallery-tab">
+                    All Spaces
+                </button>
+                <button onclick="filterGallery('exterior', this)"
+                    class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all bg-white text-thesyl-dark/70 hover:bg-thesyl-sand gallery-tab">
+                    Exterior
+                </button>
+                <button onclick="filterGallery('suites', this)"
+                    class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all bg-white text-thesyl-dark/70 hover:bg-thesyl-sand gallery-tab">
+                    Suites &amp; Rooms
+                </button>
+                <button onclick="filterGallery('dinning', this)"
+                    class="px-5 py-2 rounded-full text-xs font-bold tracking-wider uppercase transition-all bg-white text-thesyl-dark/70 hover:bg-thesyl-sand gallery-tab">
+                    Dining &amp; Lounge
+                </button>
+            </div>
+
+            <!-- Responsive Gallery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="galleryContainer">
+
+                <!-- Gallery Item 1 -->
+                <div class="relative overflow-hidden rounded-2xl shadow-md h-72 group cursor-pointer gallery-item"
+                    data-category="exterior">
+                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80"
+                        alt="Beautiful Facade"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-thesyl-dark via-transparent to-transparent opacity-80">
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span
+                            class="text-[10px] uppercase tracking-widest font-bold text-thesyl-gold block mb-1">Exterior
+                            Architecture</span>
+                        <h4 class="font-serif text-lg text-white font-semibold">Stately Main Block &amp; Reception
+                            Entrance</h4>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="relative overflow-hidden rounded-2xl shadow-md h-72 group cursor-pointer gallery-item"
+                    data-category="dinning">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80"
+                        alt="Main Restaurant"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-thesyl-dark via-transparent to-transparent opacity-80">
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span
+                            class="text-[10px] uppercase tracking-widest font-bold text-thesyl-gold block mb-1">Culinary
+                            excellence</span>
+                        <h4 class="font-serif text-lg text-white font-semibold">Thesyl Executive Bar &amp; Buffet Area
+                        </h4>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="relative overflow-hidden rounded-2xl shadow-md h-72 group cursor-pointer gallery-item"
+                    data-category="suites">
+                    <img src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80"
+                        alt="Modern Room Setting"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-thesyl-dark via-transparent to-transparent opacity-80">
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span
+                            class="text-[10px] uppercase tracking-widest font-bold text-thesyl-gold block mb-1">Accommodations</span>
+                        <h4 class="font-serif text-lg text-white font-semibold">Master Suite King Lounge Setup</h4>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div class="relative overflow-hidden rounded-2xl shadow-md h-72 group cursor-pointer gallery-item"
+                    data-category="dinning">
+                    <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=800&q=80"
+                        alt="Drinks Serving"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-thesyl-dark via-transparent to-transparent opacity-80">
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="text-[10px] uppercase tracking-widest font-bold text-thesyl-gold block mb-1">Dining
+                            &amp; Lounge</span>
+                        <h4 class="font-serif text-lg text-white font-semibold">Signature Tropical Cocktails &amp; Brews
+                        </h4>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div class="relative overflow-hidden rounded-2xl shadow-md h-72 group cursor-pointer gallery-item"
+                    data-category="suites">
+                    <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80"
+                        alt="Comfort Interior"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-thesyl-dark via-transparent to-transparent opacity-80">
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span class="text-[10px] uppercase tracking-widest font-bold text-thesyl-gold block mb-1">Luxury
+                            Interior</span>
+                        <h4 class="font-serif text-lg text-white font-semibold">Superb Architectural Bed Frames</h4>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 6 -->
+                <div class="relative overflow-hidden rounded-2xl shadow-md h-72 group cursor-pointer gallery-item"
+                    data-category="exterior">
+                    <img src="assets/evening.png" alt="Outdoor Evening View"
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-thesyl-dark via-transparent to-transparent opacity-80">
+                    </div>
+                    <div class="absolute bottom-6 left-6">
+                        <span
+                            class="text-[10px] uppercase tracking-widest font-bold text-thesyl-gold block mb-1">Evening
+                            Glow</span>
+                        <h4 class="font-serif text-lg text-white font-semibold">Warm Golden Exterior Sunset Hour</h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 7. MAP AND CONTACT FORM SECTION -->
+    <section class="py-20 lg:py-32 bg-thesyl-sand px-6 lg:px-16" id="contact">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+
+                <!-- Left Side: Interactive Contact Form -->
+                <div class="bg-thesyl-cream p-8 lg:p-12 rounded-3xl shadow-xl">
+                    <span class="text-xs uppercase tracking-[0.25em] font-bold text-thesyl-gold mb-2 block">
+                        Get In Touch
+                    </span>
+                    <h2 class="font-serif text-3xl font-normal text-thesyl-dark mb-6">
+                        Send An Inquiry Message
+                    </h2>
+
+                    <form id="contactForm" onsubmit="handleInquirySubmit(event)" class="space-y-6">
+                        <div>
+                            <label
+                                class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-2">Full
+                                Name</label>
+                            <input type="text" required
+                                class="w-full bg-thesyl-sand border-none outline-none p-4 rounded-xl focus:ring-2 focus:ring-thesyl-red transition-all"
+                                placeholder="John Doe">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label
+                                    class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-2">Email
+                                    Address</label>
+                                <input type="email" required
+                                    class="w-full bg-thesyl-sand border-none outline-none p-4 rounded-xl focus:ring-2 focus:ring-thesyl-red transition-all"
+                                    placeholder="john@example.com">
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-2">Phone
+                                    Number</label>
+                                <input type="tel" required
+                                    class="w-full bg-thesyl-sand border-none outline-none p-4 rounded-xl focus:ring-2 focus:ring-thesyl-red transition-all"
+                                    placeholder="+233 ...">
+                            </div>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-2">Subject
+                                Of Interest</label>
+                            <select
+                                class="w-full bg-thesyl-sand border-none outline-none p-4 rounded-xl focus:ring-2 focus:ring-thesyl-red transition-all text-thesyl-dark/80">
+                                <option>Room Reservation Inquiry</option>
+                                <option>Conference Hall Booking</option>
+                                <option>Catering &amp; Buffet Order</option>
+                                <option>Feedback &amp; Other Services</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-2">Inquiry
+                                Details</label>
+                            <textarea rows="4" required
+                                class="w-full bg-thesyl-sand border-none outline-none p-4 rounded-xl focus:ring-2 focus:ring-thesyl-red transition-all"
+                                placeholder="Tell us how we can curate your perfect stay..."></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-thesyl-red hover:bg-thesyl-redHover text-white py-4 rounded-xl font-bold uppercase tracking-wider text-sm transition-all shadow-md">
+                            Submit Secure Message
+                        </button>
+                    </form>
+
+                    <!-- Success banner inside card (hidden by default) -->
+                    <div id="contactSuccessMsg"
+                        class="hidden mt-6 bg-green-50 border border-green-200 text-green-800 p-4 rounded-xl flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-xl"></i>
+                        <div>
+                            <p class="font-bold">Thank You!</p>
+                            <p class="text-xs">Your booking inquiry has been safely routed to our hospitality frontdesk.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Location details & Interactive Embedded map structure -->
+                <div class="flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs uppercase tracking-[0.25em] font-bold text-thesyl-gold mb-2 block">
+                            Our Location
+                        </span>
+                        <h2 class="font-serif text-3xl font-normal text-thesyl-dark mb-6">
+                            How to Locate Us
+                        </h2>
+
+                        <!-- Mini Details Grid -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+                            <div class="flex gap-4">
+                                <div class="text-thesyl-red text-xl"><i class="fa-solid fa-location-dot"></i></div>
+                                <div>
+                                    <h4 class="font-serif font-bold text-thesyl-dark">Physical Address</h4>
+                                    <p class="text-sm text-thesyl-dark/70 mt-1">Fiapre, Sunyani, on the Catholic University Road.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="text-thesyl-red text-xl"><i class="fa-solid fa-envelope"></i></div>
+                                <div>
+                                    <h4 class="font-serif font-bold text-thesyl-dark">Direct Support</h4>
+                                    <p class="text-sm text-thesyl-dark/70 mt-1">
+                                        info@thesylhotel.com<br>support@thesylhotel.com</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="text-thesyl-red text-xl"><i class="fa-solid fa-phone-volume"></i></div>
+                                <div>
+                                    <h4 class="font-serif font-bold text-thesyl-dark">Reception Hotlines</h4>
+                                    <p class="text-sm text-thesyl-dark/70 mt-1">+233 (0) 302 456 789<br>+233 (0) 244 123
+                                        456</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="text-thesyl-red text-xl"><i class="fa-solid fa-clock"></i></div>
+                                <div>
+                                    <h4 class="font-serif font-bold text-thesyl-dark">Check-In / Out</h4>
+                                    <p class="text-sm text-thesyl-dark/70 mt-1">Check-in: 2:00 PM<br>Check-out: 12:00 PM
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OpenStreetMap responsive frame -->
+                    <div class="relative rounded-3xl overflow-hidden shadow-lg h-80 border-4 border-white">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.9854597057483!2d-2.3785968!3d7.3555255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdacf455552f4fb%3A0xbee2ac016b22136f!2sThesyl%20Hotel!5e0!3m2!1sen!2sgh!4v1782275710752!5m2!1sen!2sgh"
+                            class="w-full h-full border-0" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 8. COMPLEX MODERN FOOTER -->
+    <footer class="bg-thesyl-dark text-white pt-20 pb-24 lg:pb-12 px-6 lg:px-16 relative">
+        <div
+            class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-white/10 pb-16">
+
+            <!-- Column 1: Brand & Laurel -->
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div
+                        class="border border-thesyl-gold rounded-full w-12 h-12 flex items-center justify-center bg-white">
+                        <span class="font-serif text-xl font-bold text-thesyl-dark">T</span>
+                    </div>
+                    <div>
+                        <span
+                            class="block text-lg font-serif font-bold tracking-widest text-thesyl-gold leading-none">THESYL</span>
+                        <span
+                            class="block text-[8px] tracking-[0.2em] uppercase font-semibold text-white/60 leading-none mt-1">—
+                            HOTEL LTD. —</span>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                    A serene luxury lodging destination delivering outstanding service quality, state-of-the-art secure
+                    rooms and savory dining experiences.
+                </p>
+                <div class="flex gap-3">
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 hover:bg-thesyl-red hover:text-white transition-all flex items-center justify-center text-sm"><i
+                            class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 hover:bg-thesyl-red hover:text-white transition-all flex items-center justify-center text-sm"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <!-- <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 hover:bg-thesyl-red hover:text-white transition-all flex items-center justify-center text-sm"><i
+                            class="fa-brands fa-x-twitter"></i></a> -->
+                    <a href="#"
+                        class="w-10 h-10 rounded-full bg-white/5 hover:bg-thesyl-red hover:text-white transition-all flex items-center justify-center text-sm"><i
+                            class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- Column 2: Quick Links -->
+            <div>
+                <h3 class="font-serif text-lg font-semibold text-white mb-6 border-l-2 border-thesyl-gold pl-3">Useful
+                    Links</h3>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><a href="#about" class="hover:text-thesyl-gold transition-colors block">Our Heritage Story</a>
+                    </li>
+                    <li><a href="#suites" class="hover:text-thesyl-gold transition-colors block">Explore Executive
+                            Rooms</a></li>
+                    <li><a href="#facilities" class="hover:text-thesyl-gold transition-colors block">Amenities &amp;
+                            Conference Facilities</a></li>
+                    <li><a href="#experience" class="hover:text-thesyl-gold transition-colors block">Live Media
+                            Gallery</a></li>
+                    <li><a href="#contact" class="hover:text-thesyl-gold transition-colors block">Location
+                            Instructions</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Guest Support & Legal -->
+            <div>
+                <h3 class="font-serif text-lg font-semibold text-white mb-6 border-l-2 border-thesyl-gold pl-3">Guest
+                    Support</h3>
+                <ul class="space-y-3 text-sm text-gray-400">
+                    <li><a href="#" class="hover:text-thesyl-gold transition-colors block">Terms of Service
+                            Agreement</a></li>
+                    <li><a href="#" class="hover:text-thesyl-gold transition-colors block">Cancellation Policy</a></li>
+                    <li><a href="#" class="hover:text-thesyl-gold transition-colors block">Privacy and Safety Policy</a>
+                    </li>
+                    <li><a href="#contact" class="hover:text-thesyl-gold transition-colors block">Help &amp; FAQs</a>
+                    </li>
+                    <li><a href="mailto:support@thesylhotel.com"
+                            class="hover:text-thesyl-gold transition-colors block">Staff Portal Access</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Newsletter -->
+            <div>
+                <h3 class="font-serif text-lg font-semibold text-white mb-6 border-l-2 border-thesyl-gold pl-3">
+                    Newsletter</h3>
+                <p class="text-sm text-gray-400 leading-relaxed mb-4">
+                    Subscribe to receive seasonal promo offers, discounts and weekend culinary highlights.
+                </p>
+                <form onsubmit="handleNewsletterSubmit(event)" class="relative">
+                    <input type="email" required placeholder="Enter email..."
+                        class="w-full bg-white/5 border border-white/10 p-3.5 pr-12 rounded-lg text-sm text-white focus:outline-none focus:border-thesyl-gold">
+                    <button type="submit"
+                        class="absolute right-2 top-2 w-9 h-9 bg-thesyl-red hover:bg-thesyl-redHover rounded-md flex items-center justify-center text-xs transition-colors">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+                <div id="newsletterSuccess"
+                    class="hidden mt-2 text-xs text-green-400 font-semibold flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check"></i> Subscribed successfully!
+                </div>
+            </div>
+
+        </div>
+
+        <div
+            class="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 gap-4">
+            <p>&copy; 2026 Thesyl Hotel Ltd. All rights reserved.</p>
+            <p>Designed with meticulous perfection to match premium standards.</p>
+        </div>
+    </footer>
+
+
+    <!-- DYNAMIC BOOKING MODAL (Custom modal layout) -->
+    <div id="bookingModal"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[999] hidden flex items-center justify-center p-4">
+        <div class="bg-thesyl-cream w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl relative animate-scale-up">
+
+            <!-- Modal Header -->
+            <div class="bg-thesyl-red text-white p-6 relative">
+                <h3 class="font-serif text-2xl font-semibold">Configure Your Suite Reservation</h3>
+                <p class="text-xs text-white/80 mt-1">Select date ranges and custom lodging settings</p>
+                <button onclick="closeBookingModal()"
+                    class="absolute top-6 right-6 text-white hover:text-thesyl-gold transition-colors text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content Form -->
+            <form onsubmit="handleModalReserveSubmit(event)" class="p-8 space-y-5">
+                <div>
+                    <label
+                        class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-1.5">Select
+                        Preferred Room Class</label>
+                    <select id="modalRoomSelect"
+                        class="w-full bg-thesyl-sand border-none outline-none p-3 rounded-lg text-sm text-thesyl-dark/80">
+                        <option>Deluxe Executive Room</option>
+                        <option>Royal Presidential Suite</option>
+                        <option>Standard King Bed</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-1.5">Check-In
+                            Date</label>
+                        <input type="date" required
+                            class="w-full bg-thesyl-sand border-none outline-none p-3 rounded-lg text-sm text-thesyl-dark/80">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-1.5">Check-Out
+                            Date</label>
+                        <input type="date" required
+                            class="w-full bg-thesyl-sand border-none outline-none p-3 rounded-lg text-sm text-thesyl-dark/80">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-1.5">Adults</label>
+                        <select
+                            class="w-full bg-thesyl-sand border-none outline-none p-3 rounded-lg text-sm text-thesyl-dark/80">
+                            <option>1 Adult</option>
+                            <option>2 Adults</option>
+                            <option>3 Adults</option>
+                            <option>4+ Adults</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs uppercase tracking-wider font-semibold text-thesyl-dark/60 mb-1.5">Children</label>
+                        <select
+                            class="w-full bg-thesyl-sand border-none outline-none p-3 rounded-lg text-sm text-thesyl-dark/80">
+                            <option>0 Children</option>
+                            <option>1 Child</option>
+                            <option>2 Children</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="border-t border-thesyl-dark/10 pt-4 mt-6 flex justify-between items-center">
+                    <button type="button" onclick="closeBookingModal()"
+                        class="text-sm font-semibold text-thesyl-dark/60 hover:text-thesyl-dark uppercase">Cancel</button>
+                    <button type="submit"
+                        class="bg-thesyl-red hover:bg-thesyl-redHover text-white px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+                        Reserve Stay Now
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Indicator inside modal -->
+            <div id="modalSuccessBox"
+                class="absolute inset-0 bg-thesyl-cream z-50 flex flex-col justify-center items-center text-center p-8 hidden">
+                <div
+                    class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-4xl mb-6">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h4 class="font-serif text-2xl font-semibold text-thesyl-dark mb-2">Reservation Saved!</h4>
+                <p class="text-sm text-thesyl-dark/70 max-w-xs mb-8">
+                    Your luxury stay allocation has been pre-booked. Our reservation agent will email or call you
+                    shortly.
+                </p>
+                <button onclick="closeBookingModal()"
+                    class="bg-thesyl-red hover:bg-thesyl-redHover text-white px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+                    Done
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyAUHK06i2tz5rGu0Uqv2OubBfPljeiIIlM",
+            authDomain: "thesyl-hotel-ltd.firebaseapp.com",
+            projectId: "thesyl-hotel-ltd",
+            storageBucket: "thesyl-hotel-ltd.firebasestorage.app",
+            messagingSenderId: "619725792030",
+            appId: "1:619725792030:web:d2534ccc8d0ed8c04a9f0f",
+            measurementId: "G-VHH240698K"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
+
+
+    <!-- JAVASCRIPT FOR RESPONSIVE INTERACTIONS & ANIMATIONS -->
+    <script>
+        // Header styling change on scroll
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-white', 'shadow-md', 'py-3');
+                header.classList.remove('bg-transparent', 'py-4');
+            } else {
+                header.classList.add('bg-transparent', 'py-4');
+                header.classList.remove('bg-white', 'shadow-md', 'py-3');
+            }
+        });
+
+        // Mobile Curtain Menu Toggle Control
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const bar1 = document.getElementById('bar1');
+        const bar2 = document.getElementById('bar2');
+        const bar3 = document.getElementById('bar3');
+
+        menuToggleBtn.addEventListener('click', toggleMobileMenu);
+
+        function toggleMobileMenu() {
+            const isActive = mobileMenu.classList.toggle('active');
+
+            if (isActive) {
+                // Animate hamburger to X
+                bar1.style.transform = 'rotate(45deg) translate(8px, 6px)';
+                bar2.style.opacity = '0';
+                bar3.style.transform = 'rotate(-45deg) translate(8px, -6px)';
+            } else {
+                // Restore hamburger
+                bar1.style.transform = 'none';
+                bar2.style.opacity = '1';
+                bar3.style.transform = 'none';
+            }
+        }
+
+        // Booking Modal Operations
+        const bookingModal = document.getElementById('bookingModal');
+        const modalRoomSelect = document.getElementById('modalRoomSelect');
+        const modalSuccessBox = document.getElementById('modalSuccessBox');
+
+        function openBookingModal(defaultRoomName = 'Deluxe Executive Room') {
+            modalRoomSelect.value = defaultRoomName;
+            bookingModal.classList.remove('hidden');
+            bookingModal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // prevent back scroll
+        }
+
+        function closeBookingModal() {
+            bookingModal.classList.add('hidden');
+            bookingModal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+            // Reset success block inside modal for future usage
+            modalSuccessBox.classList.add('hidden');
+        }
+
+        function handleModalReserveSubmit(e) {
+            e.preventDefault();
+            modalSuccessBox.classList.remove('hidden');
+        }
+
+        // Contact Inquiry form handling
+        const contactForm = document.getElementById('contactForm');
+        const contactSuccessMsg = document.getElementById('contactSuccessMsg');
+
+        function handleInquirySubmit(e) {
+            e.preventDefault();
+            contactForm.reset();
+            contactSuccessMsg.classList.remove('hidden');
+            setTimeout(() => {
+                contactSuccessMsg.classList.add('hidden');
+            }, 6000);
+        }
+
+        // Newsletter subscription handling
+        const newsletterSuccess = document.getElementById('newsletterSuccess');
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            e.target.reset();
+            newsletterSuccess.classList.remove('hidden');
+            setTimeout(() => {
+                newsletterSuccess.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Dynamic Filtering for Media Gallery
+        function filterGallery(category, tabBtn) {
+            // Update tabs layout state
+            const tabs = document.querySelectorAll('.gallery-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('bg-thesyl-red', 'text-white');
+                tab.classList.add('bg-white', 'text-thesyl-dark/70');
+            });
+            tabBtn.classList.add('bg-thesyl-red', 'text-white');
+            tabBtn.classList.remove('bg-white', 'text-thesyl-dark/70');
+
+            // Filter actual assets with transition effects
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    item.style.opacity = '0';
+                    item.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        item.style.display = 'none';
+                    }, 300);
+                }
+            });
+        }
+
+        // Default direct click to view all trigger
+        function openGalleryFilter(category) {
+            const allBtn = document.querySelectorAll('.gallery-tab')[0];
+            filterGallery(category, allBtn);
+            // Scroll down cleanly to the container
+            document.getElementById('experience').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thesyl Hotel Ltd. | Comfort, Quality & Great Hospitality</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Cormorant Garamond (for luxury serif headings) & Plus Jakarta Sans (for clean body text) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet JS Map CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        thesyl: {
+                            maroon: '#801818',
+                            maroonHover: '#601010',
+                            gold: '#C5A880',
+                            goldDark: '#A3845A',
+                            cream: '#FAF8F5',
+                            sand: '#F3EFE9',
+                            dark: '#1C1917'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FAF8F5;
+            color: #1C1917;
+            overflow-x: hidden;
+        }
+
+        /* Custom warm sunset overlay to match the uploaded photo mood */
+        .hero-sunset-overlay {
+            background: linear-gradient(135deg, rgba(250, 248, 245, 0.95) 0%, rgba(250, 248, 245, 0.8) 40%, rgba(128, 24, 24, 0.15) 100%);
+        }
+
+        @media (max-width: 1024px) {
+            .hero-sunset-overlay {
+                background: linear-gradient(180deg, rgba(250, 248, 245, 0.98) 0%, rgba(250, 248, 245, 0.85) 60%, rgba(128, 24, 24, 0.2) 100%);
+            }
+        }
+
+        /* Curtain Menu Animation */
+        .curtain-menu {
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .curtain-menu.active {
+            pointer-events: auto;
+            visibility: visible;
+        }
+
+        /* Dual panel curtain slide in */
+        .curtain-panel-left,
+        .curtain-panel-right {
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            background-color: #801818;
+        }
+
+        .curtain-panel-left {
+            transform: translateX(-100%);
+        }
+
+        .curtain-panel-right {
+            transform: translateX(100%);
+        }
+
+        .curtain-menu.active .curtain-panel-left {
+            transform: translateX(0);
+        }
+
+        .curtain-menu.active .curtain-panel-right {
+            transform: translateX(0);
+        }
+
+        /* Curtain contents fade animation */
+        .curtain-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transition-delay: 0s;
+        }
+
+        .curtain-menu.active .curtain-content {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF8F5;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #C5A880;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #801818;
+        }
+
+        /* Floating Nav Active State */
+        .nav-item-active {
+            color: #801818 !important;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-thesyl-gold selection:text-white">
+
+    <!-- TOP HEADER / DESKTOP NAV -->
+    <header class="absolute top-0 left-0 w-full z-40 transition-all duration-300 px-6 lg:px-16 py-6">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+
+            <!-- Logo Recreated Perfectly -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="thesyl_logo.png" alt="Thesyl Logo" style="height: 50px;">
+            </a>
+
+            <!-- Right: Action Button & Menu Icon -->
+            <div class="flex items-center gap-6">
+                <!-- Book Now Desktop -->
+                <button onclick="openBookingModal()"
+                    class="hidden md:inline-flex items-center justify-center px-6 py-2.5 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-semibold rounded-md shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 text-sm tracking-wider uppercase">
+                    BOOK NOW
+                </button>
+
+                <!-- Hamburger Button -->
+                <button id="menu-toggle-btn"
+                    class="relative z-50 w-12 h-12 flex flex-col justify-center items-center rounded-lg bg-thesyl-maroon md:bg-transparent text-white md:text-thesyl-dark focus:outline-none transition-all duration-300 group"
+                    aria-label="Toggle Menu">
+                    <div class="space-y-1.5">
+                        <span id="hamburger-line-1"
+                            class="block w-6 h-0.5 bg-current transition-transform duration-300 origin-center"></span>
+                        <span id="hamburger-line-2"
+                            class="block w-6 h-0.5 bg-current transition-opacity duration-300"></span>
+                        <span id="hamburger-line-3"
+                            class="block w-6 h-0.5 bg-current transition-transform duration-300 origin-center"></span>
+                    </div>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- CURTAIN ANIMATED FULL SCREEN MENU -->
+    <div id="curtain-menu" class="curtain-menu fixed inset-0 z-40 flex overflow-hidden">
+        <!-- Left Panel -->
+        <div class="curtain-panel-left w-1/2 h-full flex items-center justify-end pr-8 md:pr-16"></div>
+        <!-- Right Panel -->
+        <div class="curtain-panel-right w-1/2 h-full flex items-center justify-start pl-8 md:pl-16"></div>
+
+        <!-- Shared Overlay Content centered over both panels -->
+        <div class="absolute inset-0 flex flex-col justify-between p-8 md:p-16 z-50 pointer-events-none">
+            <!-- Header placeholder to balance -->
+            <div class="flex justify-between items-center w-full">
+                <!-- Golden Logo variation for inside menu -->
+                <div class="curtain-content flex items-center gap-3">
+                    <img src="white_logo.png" alt="Thesyl Hotel Logo" style="height: 50px;">
+                </div>
+            </div>
+
+            <!-- Main Menu Links -->
+            <nav class="curtain-content flex flex-col gap-6 md:gap-8 my-auto pointer-events-auto max-w-lg">
+                <p class="text-thesyl-gold tracking-widest text-xs uppercase font-semibold">Exquisite Experience</p>
+                <a href="#hero" onclick="closeMenu()"
+                    class="font-serif text-3xl md:text-5xl text-white hover:text-thesyl-gold transition-colors duration-300 font-bold">Home</a>
+                <a href="#about" onclick="closeMenu()"
+                    class="font-serif text-3xl md:text-5xl text-white hover:text-thesyl-gold transition-colors duration-300 font-bold">Great
+                    Hospitality</a>
+                <a href="#suites" onclick="closeMenu()"
+                    class="font-serif text-3xl md:text-5xl text-white hover:text-thesyl-gold transition-colors duration-300 font-bold">Executive
+                    Suites</a>
+                <a href="#facilities" onclick="closeMenu()"
+                    class="font-serif text-3xl md:text-5xl text-white hover:text-thesyl-gold transition-colors duration-300 font-bold">Hotel
+                    Facilities</a>
+                <a href="#experience" onclick="closeMenu()"
+                    class="font-serif text-3xl md:text-5xl text-white hover:text-thesyl-gold transition-colors duration-300 font-bold">The
+                    Experience</a>
+                <a href="#contact" onclick="closeMenu()"
+                    class="font-serif text-3xl md:text-5xl text-white hover:text-thesyl-gold transition-colors duration-300 font-bold">Get
+                    In Touch</a>
+                <a href="login.html" onclick="closeMenu()"
+                    class="font-serif text-3xl md:text-5xl text-white hover:text-thesyl-gold transition-colors duration-300 font-bold">Account</a>
+            </nav>
+
+            <!-- Bottom of Menu Info -->
+            <div
+                class="curtain-content flex flex-col md:flex-row justify-between items-start md:items-center border-t border-white/10 pt-6 gap-4 text-white/60 text-xs">
+                <div>
+                    <p class="font-bold text-white">Thesyl Hotel Ltd.</p>
+                    <p>Fiapre Sunyani, Catholic University Road, Ghana</p>
+                </div>
+                <div class="flex gap-4 text-lg">
+                    <a href="#" class="hover:text-thesyl-gold transition-colors duration-300"><i
+                            class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="hover:text-thesyl-gold transition-colors duration-300"><i
+                            class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 1. HERO SECTION -->
+    <section id="hero" class="relative min-h-screen flex flex-col justify-between pt-24 md:pt-0 overflow-hidden">
+        <!-- Visual Split Container -->
+        <div class="absolute inset-0 w-full h-full flex flex-col lg:flex-row">
+            <!-- Left dynamic spacing helper -->
+            <div class="w-full lg:w-1/2 h-full hero-sunset-overlay relative z-10"></div>
+            <!-- Right rich visual representation representing the uploaded image landscape -->
+            <div class="w-full lg:w-1/2 h-1/2 lg:h-full relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-thesyl-cream via-transparent to-transparent z-10">
+                </div>
+                <!-- Dynamic Warm Sun Flare overlay -->
+                <div
+                    class="absolute top-1/4 right-1/4 w-96 h-96 rounded-full bg-orange-400 opacity-30 blur-[100px] pointer-events-none">
+                </div>
+                <!-- Premium High-Quality fallback illustration of the sunny Ghanaian Hotel facade -->
+                <img src="assets/hero.png" alt="Thesyl Hotel Exterior"
+                    class="w-full h-full object-cover object-center transform scale-105 hover:scale-100 transition-transform duration-10000">
+            </div>
+        </div>
+
+        <!-- Hero Content Overlay Grid -->
+        <div class="relative z-20 max-w-7xl mx-auto px-6 lg:px-16 flex-grow flex items-center w-full py-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
+                <!-- Text Container -->
+                <div class="lg:col-span-7 flex flex-col justify-center text-left">
+                    <span class="text-thesyl-gold tracking-[0.2em] text-xs md:text-sm font-bold uppercase mb-4 block">
+                        Comfort, Quality &
+                    </span>
+                    <h2
+                        class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-thesyl-dark leading-[0.95] mb-6">
+                        Great <br class="hidden md:inline">Hospitality
+                    </h2>
+                    <div class="w-20 h-0.5 bg-thesyl-gold mb-8"></div>
+                    <p class="text-thesyl-dark/80 text-base md:text-xl font-light leading-relaxed max-w-lg mb-10">
+                        Experience a perfect blend of comfort, elegance and warm hospitality. Each stay is tailored to
+                        render an unforgettable stay.
+                    </p>
+
+                    <div>
+                        <button onclick="openBookingModal()"
+                            class="inline-flex items-center gap-3 px-8 py-4 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 tracking-wider text-sm md:text-base uppercase group">
+                            <span>Book Your Stay</span>
+                            <i
+                                class="fa-solid fa-arrow-right transition-transform duration-300 group-hover:translate-x-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5-Grid Amenities Footer (Replicating exact Desktop Hero bottom bar) -->
+        <div
+            class="hidden lg:block relative z-20 w-full bg-thesyl-dark/85 backdrop-blur-md border-t border-white/10 py-6 px-16">
+            <div class="max-w-7xl mx-auto grid grid-cols-5 gap-8">
+                <!-- Amenity 1 -->
+                <div class="flex items-center gap-4 text-white hover:text-thesyl-gold transition-colors duration-300">
+                    <span class="text-2xl text-thesyl-gold"><i class="fa-solid fa-bed"></i></span>
+                    <div>
+                        <h4 class="text-xs uppercase font-bold tracking-wider">Comfortable</h4>
+                        <p class="text-[10px] text-white/60">Luxe Rooms & Suites</p>
+                    </div>
+                </div>
+                <!-- Amenity 2 -->
+                <div class="flex items-center gap-4 text-white hover:text-thesyl-gold transition-colors duration-300">
+                    <span class="text-2xl text-thesyl-gold"><i class="fa-solid fa-utensils"></i></span>
+                    <div>
+                        <h4 class="text-xs uppercase font-bold tracking-wider">Restaurant & Bar</h4>
+                        <p class="text-[10px] text-white/60">Local & Continental Cuisine</p>
+                    </div>
+                </div>
+                <!-- Amenity 3 -->
+                <div class="flex items-center gap-4 text-white hover:text-thesyl-gold transition-colors duration-300">
+                    <span class="text-2xl text-thesyl-gold"><i class="fa-solid fa-wifi"></i></span>
+                    <div>
+                        <h4 class="text-xs uppercase font-bold tracking-wider">Free High-Speed WiFi</h4>
+                        <p class="text-[10px] text-white/60">Always Connected</p>
+                    </div>
+                </div>
+                <!-- Amenity 4 -->
+                <div class="flex items-center gap-4 text-white hover:text-thesyl-gold transition-colors duration-300">
+                    <span class="text-2xl text-thesyl-gold"><i class="fa-solid fa-square-parking"></i></span>
+                    <div>
+                        <h4 class="text-xs uppercase font-bold tracking-wider">Secure Parking</h4>
+                        <p class="text-[10px] text-white/60">24/7 Gated Protection</p>
+                    </div>
+                </div>
+                <!-- Amenity 5 -->
+                <div class="flex items-center gap-4 text-white hover:text-thesyl-gold transition-colors duration-300">
+                    <span class="text-2xl text-thesyl-gold"><i class="fa-solid fa-user-shield"></i></span>
+                    <div>
+                        <h4 class="text-xs uppercase font-bold tracking-wider">Excellent Service</h4>
+                        <p class="text-[10px] text-white/60">Highly Trained Staff</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 2. "GREAT HOSPITALITY" BRIEF ABOUT SECTION -->
+    <section id="about" class="py-24 px-6 lg:px-16 bg-thesyl-cream relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+                <!-- Left: Beautiful Split Images Layout -->
+                <div class="lg:col-span-6 grid grid-cols-2 gap-4 relative">
+                    <div class="absolute -top-8 -left-8 w-32 h-32 bg-thesyl-sand rounded-full -z-10"></div>
+                    <div class="space-y-4">
+                        <div class="rounded-xl overflow-hidden shadow-md group">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
+                                alt="Thesyl Lobby"
+                                class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="rounded-xl overflow-hidden shadow-md group">
+                            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80"
+                                alt="Thesyl Wellness & Spa"
+                                class="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-500">
+                        </div>
+                    </div>
+                    <div class="space-y-4 pt-8">
+                        <div class="rounded-xl overflow-hidden shadow-md group">
+                            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=800&q=80"
+                                alt="Thesyl Bedroom Deluxe"
+                                class="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="rounded-xl overflow-hidden shadow-md group">
+                            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80"
+                                alt="Thesyl Dining"
+                                class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Text & Details -->
+                <div class="lg:col-span-6 space-y-8">
+                    <div class="space-y-4">
+                        <span class="text-thesyl-gold tracking-widest text-xs font-bold uppercase block">Welcome to Your
+                            Premium Oasis</span>
+                        <h3
+                            class="font-serif text-4xl md:text-5xl lg:text-6xl text-thesyl-maroon font-bold leading-tight">
+                            Where Comfort Meets Class & Elegant Culture
+                        </h3>
+                        <div class="w-16 h-0.5 bg-thesyl-gold"></div>
+                    </div>
+
+                    <p class="text-thesyl-dark/80 font-light text-base leading-relaxed">
+                        At Thesyl Hotel Ltd., hospitality is more than a service—it is our timeless legacy. Nestled in a
+                        vibrant, secure enclave, we combine contemporary Western design elements with rich local
+                        aesthetics, presenting spaces designed to inspire relaxation and pure content.
+                    </p>
+
+                    <!-- Features Highlights -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                        <div class="flex items-start gap-4">
+                            <span class="text-thesyl-maroon text-xl bg-thesyl-gold/20 p-2.5 rounded-lg"><i
+                                    class="fa-solid fa-bell-concierge"></i></span>
+                            <div>
+                                <h4 class="font-bold text-thesyl-dark">Customized Attention</h4>
+                                <p class="text-xs text-thesyl-dark/60">Personalised service tailored exactly to your
+                                    travel itineraries.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-thesyl-maroon text-xl bg-thesyl-gold/20 p-2.5 rounded-lg"><i
+                                    class="fa-solid fa-shield-halved"></i></span>
+                            <div>
+                                <h4 class="font-bold text-thesyl-dark">Gated Safe Environment</h4>
+                                <p class="text-xs text-thesyl-dark/60">Fully monitored facility with 24-hour physical
+                                    secure checkpoints.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <a href="#suites"
+                            class="inline-flex items-center gap-2 text-thesyl-maroon font-bold uppercase text-sm tracking-wider hover:text-thesyl-gold transition-colors duration-300">
+                            <span>Explore our premium suites</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 3. "EXECUTIVE SUITES" SECTION -->
+    <section id="suites" class="py-24 px-6 lg:px-16 bg-thesyl-sand relative">
+        <div class="max-w-7xl mx-auto">
+
+            <!-- Header Section -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="space-y-4 max-w-xl">
+                    <span class="text-thesyl-gold tracking-widest text-xs font-bold uppercase block">Premium
+                        Accommodations</span>
+                    <h3 class="font-serif text-4xl md:text-5xl text-thesyl-dark font-bold leading-tight">
+                        Our Executive Suites
+                    </h3>
+                    <p class="text-thesyl-dark/75 text-sm md:text-base font-light">
+                        Indulge in spaces custom-curated for relaxation, loaded with modern premium smart systems,
+                        elegant beddings, and sunset vistas.
+                    </p>
+                </div>
+                <div>
+                    <button onclick="openBookingModal()"
+                        class="px-6 py-3 border-2 border-thesyl-maroon text-thesyl-maroon hover:bg-thesyl-maroon hover:text-white font-bold rounded-lg text-sm tracking-wide uppercase transition-all duration-300">
+                        View All Suites
+                    </button>
+                </div>
+            </div>
+
+            <!-- Suites Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <!-- Suite Card 1 -->
+                <div
+                    class="bg-white rounded-2xl overflow-hidden shadow-lg border border-thesyl-gold/10 group flex flex-col justify-between">
+                    <div>
+                        <div class="relative overflow-hidden h-72">
+                            <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80"
+                                alt="Classic Suite"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <span
+                                class="absolute top-4 left-4 bg-thesyl-maroon text-white text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full">
+                                Guest Pick
+                            </span>
+                            <span
+                                class="absolute bottom-4 right-4 bg-thesyl-dark/80 backdrop-blur-md text-thesyl-gold text-sm font-bold px-3 py-1 rounded">
+                                $150 / Night
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <h4 class="font-serif text-2xl font-bold text-thesyl-dark">Classic Deluxe Suite</h4>
+                            <p class="text-xs text-thesyl-dark/60 leading-relaxed">
+                                A superb spacious entry-level luxury containing a comfortable Queen bed, modular vanity
+                                station, high-definition entertainment, and an writing desk.
+                            </p>
+                            <!-- Amenity Icons list -->
+                            <div class="flex items-center gap-4 text-thesyl-dark/60 text-xs pt-2">
+                                <span title="1 Queen Bed"><i class="fa-solid fa-bed text-thesyl-gold"></i> 1 Bed</span>
+                                <span title="Free Wifi"><i class="fa-solid fa-wifi text-thesyl-gold"></i> Wifi</span>
+                                <span title="Max 2 Guests"><i class="fa-solid fa-user-group text-thesyl-gold"></i> 2
+                                    Guests</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openBookingModal('Classic Deluxe Suite')"
+                            class="w-full py-3 bg-thesyl-cream hover:bg-thesyl-maroon text-thesyl-maroon hover:text-white font-bold rounded-lg text-xs tracking-wider uppercase transition-all duration-300">
+                            Select Suite & Book
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Suite Card 2 -->
+                <div
+                    class="bg-white rounded-2xl overflow-hidden shadow-xl border-2 border-thesyl-gold/40 relative group flex flex-col justify-between transform md:-translate-y-2">
+                    <div
+                        class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-thesyl-gold text-thesyl-dark font-bold text-[10px] tracking-widest uppercase px-4 py-1 rounded-full shadow-md z-10">
+                        Most Popular
+                    </div>
+                    <div>
+                        <div class="relative overflow-hidden h-72">
+                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80"
+                                alt="Executive Suite"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <span
+                                class="absolute bottom-4 right-4 bg-thesyl-dark/80 backdrop-blur-md text-thesyl-gold text-sm font-bold px-3 py-1 rounded">
+                                $220 / Night
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <h4 class="font-serif text-2xl font-bold text-thesyl-dark">Thesyl Signature Suite</h4>
+                            <p class="text-xs text-thesyl-dark/60 leading-relaxed">
+                                Elevate your stay. Includes an ultra-plush King bed, dedicated modern mini-living
+                                lounge, walk-in shower panel, and custom views overlooking the landscape.
+                            </p>
+                            <!-- Amenity Icons list -->
+                            <div class="flex items-center gap-4 text-thesyl-dark/60 text-xs pt-2">
+                                <span title="1 King Bed"><i class="fa-solid fa-bed text-thesyl-gold"></i> 1 King
+                                    Bed</span>
+                                <span title="Free Premium Wifi"><i class="fa-solid fa-wifi text-thesyl-gold"></i> 5G
+                                    Wifi</span>
+                                <span title="Max 3 Guests"><i class="fa-solid fa-user-group text-thesyl-gold"></i> 3
+                                    Guests</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openBookingModal('Thesyl Signature Suite')"
+                            class="w-full py-3 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-lg text-xs tracking-wider uppercase transition-all duration-300">
+                            Select Suite & Book
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Suite Card 3 -->
+                <div
+                    class="bg-white rounded-2xl overflow-hidden shadow-lg border border-thesyl-gold/10 group flex flex-col justify-between">
+                    <div>
+                        <div class="relative overflow-hidden h-72">
+                            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80"
+                                alt="Presidential Suite"
+                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                            <span
+                                class="absolute top-4 left-4 bg-yellow-600 text-white text-[11px] font-bold tracking-widest uppercase px-3 py-1 rounded-full">
+                                Elite Tier
+                            </span>
+                            <span
+                                class="absolute bottom-4 right-4 bg-thesyl-dark/80 backdrop-blur-md text-thesyl-gold text-sm font-bold px-3 py-1 rounded">
+                                $390 / Night
+                            </span>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <h4 class="font-serif text-2xl font-bold text-thesyl-dark">Royal Presidential Penthouse</h4>
+                            <p class="text-xs text-thesyl-dark/60 leading-relaxed">
+                                The ultimate definition of prestige. Multi-room panoramic layout containing dual premium
+                                marble baths, private dynamic dining room, and an expansive terrace balcony.
+                            </p>
+                            <!-- Amenity Icons list -->
+                            <div class="flex items-center gap-4 text-thesyl-dark/60 text-xs pt-2">
+                                <span title="2 King Beds"><i class="fa-solid fa-bed text-thesyl-gold"></i> 2 King
+                                    Beds</span>
+                                <span title="Ultra Wifi & Automation"><i class="fa-solid fa-wifi text-thesyl-gold"></i>
+                                    Smart Tech</span>
+                                <span title="Max 5 Guests"><i class="fa-solid fa-user-group text-thesyl-gold"></i> 5
+                                    Guests</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openBookingModal('Royal Presidential Penthouse')"
+                            class="w-full py-3 bg-thesyl-cream hover:bg-thesyl-maroon text-thesyl-maroon hover:text-white font-bold rounded-lg text-xs tracking-wider uppercase transition-all duration-300">
+                            Select Suite & Book
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 4. FACILITIES SECTION -->
+    <section id="facilities" class="py-24 px-6 lg:px-16 bg-thesyl-cream relative">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="text-thesyl-gold tracking-widest text-xs font-bold uppercase block">Exceptional
+                    Features</span>
+                <h3 class="font-serif text-4xl md:text-5xl text-thesyl-dark font-bold">Unrivaled Facilities & Services
+                </h3>
+                <div class="w-16 h-0.5 bg-thesyl-gold mx-auto"></div>
+                <p class="text-thesyl-dark/70 text-sm md:text-base font-light">
+                    Whether you are checking in for global business conferences or pure local leisure, our premium
+                    amenities ensure comfortable service from check-in to checkout.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- Facility 1 -->
+                <div
+                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-thesyl-gold/10 group text-center flex flex-col items-center">
+                    <span
+                        class="w-16 h-16 rounded-full bg-thesyl-sand text-thesyl-maroon text-3xl flex items-center justify-center mb-6 group-hover:bg-thesyl-maroon group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-utensils"></i>
+                    </span>
+                    <h4 class="font-serif text-xl font-bold text-thesyl-dark mb-3">Gourmet Dining</h4>
+                    <p class="text-xs text-thesyl-dark/60 leading-relaxed">
+                        Savor beautiful local Ghanaian cuisines alongside premium Western gastronomy prepared by
+                        standard chefs.
+                    </p>
+                </div>
+
+                <!-- Facility 2 -->
+                <div
+                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-thesyl-gold/10 group text-center flex flex-col items-center">
+                    <span
+                        class="w-16 h-16 rounded-full bg-thesyl-sand text-thesyl-maroon text-3xl flex items-center justify-center mb-6 group-hover:bg-thesyl-maroon group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-martini-glass-citrus"></i>
+                    </span>
+                    <h4 class="font-serif text-xl font-bold text-thesyl-dark mb-3">Sunset Lounge & Bar</h4>
+                    <p class="text-xs text-thesyl-dark/60 leading-relaxed">
+                        Unwind with vintage reserve wines, signature island juices, and top-tier local spirits in a
+                        classy, ambient lounge.
+                    </p>
+                </div>
+
+                <!-- Facility 3 -->
+                <div
+                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-thesyl-gold/10 group text-center flex flex-col items-center">
+                    <span
+                        class="w-16 h-16 rounded-full bg-thesyl-sand text-thesyl-maroon text-3xl flex items-center justify-center mb-6 group-hover:bg-thesyl-maroon group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-spa"></i>
+                    </span>
+                    <h4 class="font-serif text-xl font-bold text-thesyl-dark mb-3">Rejuvenation Spa</h4>
+                    <p class="text-xs text-thesyl-dark/60 leading-relaxed">
+                        Treat your physical body to curated botanical therapy, aromatherapy, massotherapy, and expert
+                        facial packages.
+                    </p>
+                </div>
+
+                <!-- Facility 4 -->
+                <div
+                    class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-thesyl-gold/10 group text-center flex flex-col items-center">
+                    <span
+                        class="w-16 h-16 rounded-full bg-thesyl-sand text-thesyl-maroon text-3xl flex items-center justify-center mb-6 group-hover:bg-thesyl-maroon group-hover:text-white transition-all duration-300">
+                        <i class="fa-solid fa-people-roof"></i>
+                    </span>
+                    <h4 class="font-serif text-xl font-bold text-thesyl-dark mb-3">Business & Conference</h4>
+                    <p class="text-xs text-thesyl-dark/60 leading-relaxed">
+                        High-capacity workspace centers equipped with HD projectors, dynamic boardrooms, and super-fast
+                        fiber connections.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 5. "VISIT THESYL" CTA SECTION -->
+    <section class="relative py-24 px-6 lg:px-16 text-white overflow-hidden bg-thesyl-dark">
+        <!-- Visual Background Layer -->
+        <div class="absolute inset-0 z-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80"
+                alt="Hotel luxury lobby background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-thesyl-maroon mix-blend-multiply"></div>
+        </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center space-y-8">
+            <div class="inline-flex items-center justify-center gap-1.5 text-thesyl-gold text-lg">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+            </div>
+            <h3 class="font-serif text-4xl md:text-6xl font-bold tracking-tight leading-tight">
+                Experience Genuine Hospitality <br class="hidden md:inline"> Designed Around You
+            </h3>
+            <p class="text-white/80 max-w-xl mx-auto font-light text-sm md:text-base leading-relaxed">
+                We invite you to spend moments of blissful solace. Book your luxury suite or talk directly to our
+                concierge service to resolve special reservations.
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+                <button onclick="openBookingModal()"
+                    class="w-full sm:w-auto px-8 py-4 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-lg shadow-lg tracking-wider text-sm uppercase transition-all duration-300 transform hover:-translate-y-0.5">
+                    Book Suite Now
+                </button>
+                <a href="tel:+233200000000"
+                    class="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg border border-white/20 tracking-wider text-sm uppercase transition-all duration-300 text-center flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>Give Us A Call</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 6. "THE EXPERIENCE" GALLERY SECTION -->
+    <section id="experience" class="py-24 px-6 lg:px-16 bg-thesyl-cream">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="space-y-4 max-w-xl">
+                    <span class="text-thesyl-gold tracking-widest text-xs font-bold uppercase block">Moments Crafted At
+                        Thesyl</span>
+                    <h3 class="font-serif text-4xl md:text-5xl text-thesyl-dark font-bold leading-none">The Experience
+                        Gallery</h3>
+                    <div class="w-16 h-0.5 bg-thesyl-gold mt-2"></div>
+                </div>
+                <div>
+                    <button
+                        onclick="openToast('Our full digital photo library is currently being updated with new seasonal captures.')"
+                        class="px-6 py-3 bg-white hover:bg-thesyl-sand border border-thesyl-gold text-thesyl-dark font-bold rounded-lg text-sm tracking-wide uppercase transition-all duration-300">
+                        View Full Gallery
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mosaic Photo Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                <!-- Main big card -->
+                <div onclick="openLightbox('https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80', 'Sunny Pool & Sunset Deck')"
+                    class="md:col-span-8 h-96 rounded-2xl overflow-hidden shadow-md relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80"
+                        alt="Pool view"
+                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
+                        <div>
+                            <span class="text-thesyl-gold text-xs font-bold uppercase tracking-wider">Outdoor
+                                Leisure</span>
+                            <h4 class="text-white text-xl md:text-2xl font-serif font-bold mt-1">Sunny Pool & Sunset
+                                Deck</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Side Tall Card -->
+                <div onclick="openLightbox('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80', 'Main Entry Courtyard')"
+                    class="md:col-span-4 h-96 rounded-2xl overflow-hidden shadow-md relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80"
+                        alt="Main lobby interior"
+                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
+                        <div>
+                            <span class="text-thesyl-gold text-xs font-bold uppercase tracking-wider">Aesthetics</span>
+                            <h4 class="text-white text-xl font-serif font-bold mt-1">Main Lobby Entrance</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom 3 Cards -->
+                <div onclick="openLightbox('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80', 'Thesyl Culinary Arts')"
+                    class="md:col-span-4 h-64 rounded-2xl overflow-hidden shadow-md relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
+                        alt="Culinary plating"
+                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
+                        <div>
+                            <span class="text-thesyl-gold text-xs font-bold uppercase tracking-wider">Cuisine</span>
+                            <h4 class="text-white text-lg font-serif font-bold mt-1">Fine Culinary Arts</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div onclick="openLightbox('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80', 'Thesyl Outer Architectural Front')"
+                    class="md:col-span-4 h-64 rounded-2xl overflow-hidden shadow-md relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80"
+                        alt="Outer dynamic views"
+                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
+                        <div>
+                            <span class="text-thesyl-gold text-xs font-bold uppercase tracking-wider">Facade</span>
+                            <h4 class="text-white text-lg font-serif font-bold mt-1">Architectural Front</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div onclick="openLightbox('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80', 'Beautiful Executive Lounges')"
+                    class="md:col-span-4 h-64 rounded-2xl overflow-hidden shadow-md relative group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80"
+                        alt="Executive Lounge"
+                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-6">
+                        <div>
+                            <span class="text-thesyl-gold text-xs font-bold uppercase tracking-wider">Interiors</span>
+                            <h4 class="text-white text-lg font-serif font-bold mt-1">Executive Lounges</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 7. CONTACT & DYNAMIC MAP SECTION -->
+    <section id="contact" class="py-24 px-6 lg:px-16 bg-thesyl-sand relative">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+
+                <!-- Left: Contact Form -->
+                <div
+                    class="lg:col-span-5 bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-thesyl-gold/10 space-y-6">
+                    <div class="space-y-2">
+                        <span class="text-thesyl-gold tracking-widest text-xs font-bold uppercase block">Get In
+                            Touch</span>
+                        <h3 class="font-serif text-3xl font-bold text-thesyl-dark">Reach Out Directly</h3>
+                        <p class="text-xs text-thesyl-dark/60">We generally respond within 2 business hours.</p>
+                    </div>
+
+                    <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-1.5"
+                                for="contact-name">Full Name</label>
+                            <input type="text" id="contact-name" required
+                                class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-1.5"
+                                for="contact-email">Email Address</label>
+                            <input type="email" id="contact-email" required
+                                class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-1.5"
+                                for="contact-phone">Phone Number</label>
+                            <input type="tel" id="contact-phone"
+                                class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase font-bold text-thesyl-dark/70 mb-1.5"
+                                for="contact-message">Your Message</label>
+                            <textarea id="contact-message" required rows="4"
+                                class="w-full px-4 py-3 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent transition-all resize-none"></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full py-4 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-lg text-xs tracking-wider uppercase transition-all duration-300 transform hover:-translate-y-0.5">
+                            Submit Inquiry
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Map Location & Directions info -->
+                <div class="lg:col-span-7 space-y-8 h-full flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h3 class="font-serif text-3xl md:text-4xl font-bold text-thesyl-dark">Locate Us At Accra</h3>
+                        <p class="text-thesyl-dark/75 text-sm md:text-base font-light">
+                            Conveniently situated in a serene neighborhood on the Fiapre Sunyani, Catholic University
+                            Road. Just a short 20-minute drive from the Kotoka International Airport.
+                        </p>
+                        <!-- Quick Details -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="flex items-center gap-3 text-sm">
+                                <span class="text-thesyl-maroon text-lg"><i
+                                        class="fa-solid fa-map-location-dot"></i></span>
+                                <span>Fiapre Sunyani, Catholic University Road, Ghana</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <span class="text-thesyl-maroon text-lg"><i class="fa-solid fa-envelope"></i></span>
+                                <span>info@thesylhotel.com</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <span class="text-thesyl-maroon text-lg"><i class="fa-solid fa-phone-volume"></i></span>
+                                <span>+233 (0) 24 555 6789</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-sm">
+                                <span class="text-thesyl-maroon text-lg"><i class="fa-solid fa-circle-check"></i></span>
+                                <span>Check-in: 2:00 PM | Out: 11:00 AM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Leaflet Open Street Map Holder -->
+                    <div class="rounded-2xl overflow-hidden shadow-lg border border-thesyl-gold/20 h-80 z-10"
+                        id="map-container">
+                        <!-- Dynamic map will load here -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- 8. COMPLEX PREMIUM FOOTER -->
+    <footer class="bg-thesyl-dark text-white pt-20 pb-12 px-6 lg:px-16 border-t border-white/5 relative z-20">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 pb-16 border-b border-white/10">
+
+                <!-- Col 1: Brand -->
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="flex items-center gap-3">
+                        <div class="text-left">
+                            <img src="white_logo.png" alt="Thesyl hotel Logo" style="height: 50px;">
+                        </div>
+                    </div>
+                    <p class="text-xs text-white/60 leading-relaxed max-w-sm">
+                        Combining classic architectural styling with modern design comfort. We look forward to treating
+                        you to the high standard of hospitality you deserve.
+                    </p>
+                    <div class="flex gap-4 text-sm">
+                        <a href="#"
+                            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-thesyl-gold hover:text-thesyl-dark transition-all duration-300"><i
+                                class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"
+                            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-thesyl-gold hover:text-thesyl-dark transition-all duration-300"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="#"
+                            class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center hover:bg-thesyl-gold hover:text-thesyl-dark transition-all duration-300"><i
+                                class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation Links -->
+                <div class="lg:col-span-2 space-y-4">
+                    <h5 class="text-xs uppercase font-bold tracking-widest text-thesyl-gold">Quick Links</h5>
+                    <ul class="space-y-2 text-xs text-white/70">
+                        <li><a href="#hero" class="hover:text-thesyl-gold transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-thesyl-gold transition-colors">Great Hospitality</a></li>
+                        <li><a href="#suites" class="hover:text-thesyl-gold transition-colors">Our Suites</a></li>
+                        <li><a href="#facilities" class="hover:text-thesyl-gold transition-colors">Amenities</a></li>
+                        <li><a href="#experience" class="hover:text-thesyl-gold transition-colors">The Experience</a>
+                        </li>
+                        <li><a href="#contact" class="hover:text-thesyl-gold transition-colors">Locate & Call Us</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Practical Info -->
+                <div class="lg:col-span-2 space-y-4">
+                    <h5 class="text-xs uppercase font-bold tracking-widest text-thesyl-gold">Explore</h5>
+                    <ul class="space-y-2 text-xs text-white/70">
+                        <li><a href="#"
+                                onclick="openToast('Restaurant reservations open daily. Direct bookings available on-site.')"
+                                class="hover:text-thesyl-gold transition-colors">Fine Dining</a></li>
+                        <li><a href="#" onclick="openToast('Spa booking systems are open for resident guests.')"
+                                class="hover:text-thesyl-gold transition-colors">Beauty & Wellness</a></li>
+                        <li><a href="#"
+                                onclick="openToast('Conference and banquet inquiries can be placed via the contact form.')"
+                                class="hover:text-thesyl-gold transition-colors">Meetings & Events</a></li>
+                        <li><a href="#"
+                                onclick="openToast('Local touring guides can be secured at our reception desk.')"
+                                class="hover:text-thesyl-gold transition-colors">Ghana Tour Guide</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Newsletter -->
+                <div class="lg:col-span-4 space-y-4">
+                    <h5 class="text-xs uppercase font-bold tracking-widest text-thesyl-gold">Subscribe to the Luxury
+                        Gazette</h5>
+                    <p class="text-xs text-white/60 leading-relaxed">
+                        Stay notified of our seasonal holiday rates, fine dining events, and exclusive concierge
+                        packages.
+                    </p>
+                    <form onsubmit="handleSubscribe(event)" class="flex gap-2">
+                        <input type="email" required placeholder="Email Address..."
+                            class="flex-grow px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-xs text-white focus:outline-none focus:ring-1 focus:ring-thesyl-gold placeholder-white/40">
+                        <button type="submit"
+                            class="px-4 py-3 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-lg text-xs uppercase tracking-wide transition-all">
+                            Join
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Bottom Disclaimer/Copyright -->
+            <div class="pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-white/50 gap-4">
+                <p>&copy; 2026 Thesyl Hotel Ltd. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" onclick="openToast('Privacy Policy details simulated.')"
+                        class="hover:text-thesyl-gold">Privacy Policy</a>
+                    <a href="#" onclick="openToast('Terms & Conditions details simulated.')"
+                        class="hover:text-thesyl-gold">Terms of Service</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+
+    <!-- STICKY MOBILE BOTTOM NAVIGATION BAR (As shown in the second image) -->
+    <div class="lg:hidden fixed bottom-6 left-6 right-6 z-30 transition-all duration-300">
+        <div
+            class="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/40 grid grid-cols-5 h-20 items-end pb-3.5 px-1 relative">
+
+            <!-- Home Item -->
+            <a href="#hero"
+                class="flex flex-col items-center justify-center text-thesyl-dark/70 hover:text-thesyl-maroon transition-all duration-200">
+                <span class="text-xl"><i class="fa-solid fa-house"></i></span>
+                <span class="text-[9px] uppercase font-bold tracking-wider mt-1.5 leading-none">Home</span>
+            </a>
+
+            <!-- Suites Item -->
+            <a href="#suites"
+                class="flex flex-col items-center justify-center text-thesyl-dark/70 hover:text-thesyl-maroon transition-all duration-200">
+                <span class="text-xl"><i class="fa-solid fa-bed"></i></span>
+                <span class="text-[9px] uppercase font-bold tracking-wider mt-1.5 leading-none">Suites</span>
+            </a>
+
+            <!-- Centered Floating "Book" Circle Button aligned perfectly in the middle column -->
+            <div class="flex flex-col items-center justify-between h-full relative">
+                <button onclick="openBookingModal()"
+                    class="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white rounded-full flex items-center justify-center shadow-lg border-4 border-[#FAF8F5] transition-all duration-300 hover:scale-105"
+                    aria-label="Book Suite">
+                    <span class="text-xl"><i class="fa-solid fa-calendar-days"></i></span>
+                </button>
+                <span
+                    class="text-[9px] uppercase font-bold tracking-wider text-thesyl-maroon mt-auto leading-none">Book</span>
+            </div>
+
+            <!-- Facilities Item -->
+            <a href="#facilities"
+                class="flex flex-col items-center justify-center text-thesyl-dark/70 hover:text-thesyl-maroon transition-all duration-200">
+                <span class="text-xl"><i class="fa-solid fa-water-ladder"></i></span>
+                <span class="text-[9px] uppercase font-bold tracking-wider mt-1.5 leading-none">Facilities</span>
+            </a>
+
+            <!-- Account Item -->
+            <button
+                class="flex flex-col items-center justify-center text-thesyl-dark/70 hover:text-thesyl-maroon transition-all duration-200 focus:outline-none">
+                <a href="login.html">
+                    <span class="text-xl"><i class="fa-solid fa-circle-user"></i></span>
+                    <span class="text-[9px] uppercase font-bold tracking-wider mt-1.5 leading-none">Account</span>
+                </a>
+            </button>
+
+        </div>
+    </div>
+
+
+    <!-- CUSTOM BOOKING DIALOG MODAL (No standard browser alerts used) -->
+    <div id="booking-modal" class="fixed inset-0 z-50 overflow-y-auto hidden flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div onclick="closeBookingModal()" class="fixed inset-0 bg-thesyl-dark/80 backdrop-blur-sm"></div>
+
+        <!-- Modal Card -->
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-thesyl-gold/20 transform transition-all duration-300 scale-95 opacity-0"
+            id="booking-modal-card">
+
+            <!-- Header banner -->
+            <div class="bg-thesyl-maroon text-white p-6 relative">
+                <h3 class="font-serif text-2xl font-bold">Reservation Request</h3>
+                <p class="text-xs text-white/70 mt-1">Book directly to unlock premium complimentary cocktails.</p>
+                <button onclick="closeBookingModal()"
+                    class="absolute top-6 right-6 text-white/80 hover:text-white text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Form Body -->
+            <form id="reservation-form" onsubmit="handleReservationSubmit(event)" class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1"
+                            for="book-in">Check-In Date</label>
+                        <input type="date" id="book-in" required
+                            class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1"
+                            for="book-out">Check-Out Date</label>
+                        <input type="date" id="book-out" required
+                            class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1"
+                        for="suite-type">Select Suite Tier</label>
+                    <select id="suite-type" required
+                        class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent">
+                        <option value="Classic Deluxe Suite">Classic Deluxe Suite — $150/Night</option>
+                        <option value="Thesyl Signature Suite" selected>Thesyl Signature Suite — $220/Night</option>
+                        <option value="Royal Presidential Penthouse">Royal Presidential Penthouse — $390/Night</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1"
+                            for="guest-count">Adults</label>
+                        <select id="guest-count"
+                            class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none">
+                            <option value="1">1 Adult</option>
+                            <option value="2">2 Adults</option>
+                            <option value="3">3 Adults</option>
+                            <option value="4">4 Adults</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1"
+                            for="children-count">Children</label>
+                        <select id="children-count"
+                            class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none">
+                            <option value="0">0 Children</option>
+                            <option value="1">1 Child</option>
+                            <option value="2">2 Children</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr class="border-thesyl-gold/10 my-2">
+
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1" for="book-name">Your
+                        Full Name</label>
+                    <input type="text" id="book-name" required placeholder="John Doe"
+                        class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1"
+                            for="book-email">Email Address</label>
+                        <input type="email" id="book-email" required placeholder="john@example.com"
+                            class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase font-bold text-thesyl-dark/70 mb-1"
+                            for="book-phone">Phone Number</label>
+                        <input type="tel" id="book-phone" required placeholder="+233..."
+                            class="w-full px-3 py-2 bg-thesyl-cream border border-thesyl-gold/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-thesyl-maroon focus:border-transparent">
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-4 mt-2 bg-thesyl-maroon hover:bg-thesyl-maroonHover text-white font-bold rounded-lg text-xs tracking-wider uppercase transition-all duration-300">
+                    Confirm Booking Request
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- DYNAMIC POPUP TOAST SYSTEM (No standard browser alert) -->
+    <div id="toast-wrapper" class="fixed top-6 right-6 z-50 space-y-3 pointer-events-none max-w-sm w-full"></div>
+
+
+    <!-- GALLERY LIGHTBOX SYSTEM -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-black/95 hidden flex-col items-center justify-center p-6">
+        <button onclick="closeLightbox()"
+            class="absolute top-6 right-6 text-white hover:text-thesyl-gold text-2xl transition-colors">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="lightbox-img" src="" alt="Zoomed view" class="max-h-[80vh] max-w-full object-contain rounded-lg">
+        <p id="lightbox-caption" class="text-white font-serif text-lg md:text-xl mt-4 tracking-wider text-center"></p>
+    </div>
+
+
+    <!-- Leaflet JS Map Script CDN -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- CORE INTERACTION JAVASCRIPT -->
+    <script>
+        // DOM Elements
+        const menuToggleBtn = document.getElementById('menu-toggle-btn');
+        const curtainMenu = document.getElementById('curtain-menu');
+        const hamburgerLine1 = document.getElementById('hamburger-line-1');
+        const hamburgerLine2 = document.getElementById('hamburger-line-2');
+        const hamburgerLine3 = document.getElementById('hamburger-line-3');
+
+        const bookingModal = document.getElementById('booking-modal');
+        const bookingModalCard = document.getElementById('booking-modal-card');
+        const reservationForm = document.getElementById('reservation-form');
+        const contactForm = document.getElementById('contact-form');
+
+        // Toggle Curtain Navigation
+        let isMenuOpen = false;
+
+        menuToggleBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                openMenu();
+            } else {
+                closeMenu();
+            }
+        });
+
+        function openMenu() {
+            isMenuOpen = true;
+            curtainMenu.classList.add('active');
+
+            // Turn hamburger to X symbol
+            hamburgerLine1.style.transform = 'translateY(8px) rotate(45deg)';
+            hamburgerLine2.style.opacity = '0';
+            hamburgerLine3.style.transform = 'translateY(-8px) rotate(-45deg)';
+
+            // Temporarily lock scroll
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeMenu() {
+            isMenuOpen = false;
+            curtainMenu.classList.remove('active');
+
+            // Turn back to normal hamburger
+            hamburgerLine1.style.transform = 'none';
+            hamburgerLine2.style.opacity = '1';
+            hamburgerLine3.style.transform = 'none';
+
+            // Restore scroll
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Custom Booking Modal Functions
+        function openBookingModal(suiteName = '') {
+            if (suiteName) {
+                document.getElementById('suite-type').value = suiteName;
+            }
+            bookingModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            setTimeout(() => {
+                bookingModalCard.classList.remove('scale-95', 'opacity-0');
+                bookingModalCard.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeBookingModal() {
+            bookingModalCard.classList.remove('scale-100', 'opacity-100');
+            bookingModalCard.classList.add('scale-95', 'opacity-0');
+            document.body.classList.remove('overflow-hidden');
+            setTimeout(() => {
+                bookingModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Toast Notification System
+        function openToast(message, type = 'info') {
+            const toastWrapper = document.getElementById('toast-wrapper');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl shadow-2xl border flex items-start gap-3 transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto bg-white border-thesyl-gold/30 text-thesyl-dark`;
+
+            let icon = '<i class="fa-solid fa-circle-info text-thesyl-gold"></i>';
+            if (type === 'success') {
+                icon = '<i class="fa-solid fa-circle-check text-green-600"></i>';
+            }
+
+            toast.innerHTML = `
+                <div class="text-lg">${icon}</div>
+                <div class="flex-grow">
+                    <p class="text-xs leading-relaxed">${message}</p>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-thesyl-dark/40 hover:text-thesyl-dark text-xs"><i class="fa-solid fa-xmark"></i></button>
+            `;
+
+            toastWrapper.appendChild(toast);
+
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+                toast.classList.add('translate-y-0', 'opacity-100');
+            }, 50);
+
+            // Auto-dismiss
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 5000);
+        }
+
+        // Event handler for Reservation submit
+        function handleReservationSubmit(event) {
+            event.preventDefault();
+            const suite = document.getElementById('suite-type').value;
+            const name = document.getElementById('book-name').value;
+            const dateIn = document.getElementById('book-in').value;
+            const dateOut = document.getElementById('book-out').value;
+
+            closeBookingModal();
+            openToast(`Thank you, ${name}! Your provisional reservation request for the ${suite} (Check-in: ${dateIn}) has been registered. Our desk concierge will email you dynamic confirmation shortly.`, 'success');
+            reservationForm.reset();
+        }
+
+        // Event handler for Contact submit
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            openToast(`Thank you, ${name}. Your message was compiled securely and routed to our support team. We'll correspond soon!`, 'success');
+            contactForm.reset();
+        }
+
+        // Event handler for Newsletter subscription
+        function handleSubscribe(event) {
+            event.preventDefault();
+            openToast('Excellent! Your email address was successfully subscribed to the Thesyl Gazette luxury list.', 'success');
+            event.target.reset();
+        }
+
+        // Lightbox Functions for the Gallery
+        function openLightbox(imgSrc, captionText) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+
+            lightboxImg.src = imgSrc;
+            lightboxCaption.textContent = captionText;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Initialize Leaflet Map
+        function initLocationMap() {
+            // Thesyl Location: Fiapre Sunyani, Catholic University Road, Ghana
+            const lat = 5.6268;
+            const lng = -0.1189;
+
+            // Set up map centered at Spintex coordinates
+            const map = L.map('map-container', {
+                scrollWheelZoom: false
+            }).setView([lat, lng], 14);
+
+            // Standard beautiful tile layer with cream/gold accents
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            // Elegant custom icon
+            const customIcon = L.divIcon({
+                html: `<div class="w-8 h-8 rounded-full bg-thesyl-maroon border-2 border-thesyl-gold flex items-center justify-center text-white shadow-lg animate-bounce"><i class="fa-solid fa-hotel text-xs"></i></div>`,
+                className: '',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32]
+            });
+
+            // Put Marker on Map
+            L.marker([lat, lng], { icon: customIcon })
+                .addTo(map)
+                .bindPopup(`<strong class="font-serif">Thesyl Hotel Ltd.</strong><br><span class="text-xs">Fiapre Sunyani, Catholic University Road</span>`)
+                .openPopup();
+        }
+
+        // On Load Window Initialization
+        window.onload = function () {
+            initLocationMap();
+
+            // Set default date range constraints in reservation modal
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('book-in').setAttribute('min', today);
+            document.getElementById('book-out').setAttribute('min', today);
+        }
+    </script>
+</body>
+
+</html>
